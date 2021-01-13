@@ -1,0 +1,373 @@
+
+
+.clasbtn{
+    background-color: rgb(194, 201, 100);
+    border-radius: 12px;
+}
+
+.carded{
+    height: 40%;
+    width: 30%;
+}
+.scrollled{
+    overflow: hidden;
+}
+
+h6{
+    color: white;
+}
+.title{
+    color: black;
+}
+.cardtitle{
+    text-align: center;
+    color:white;
+}
+.bg-primary {
+    background-color: #cdd3d8!important;
+}
+.cardlabel{
+    color: black;
+
+}
+.bg-success {
+    background-color: #e7edf1!important;
+}
+.carousel .carousel-item {
+    height: 150px;
+   width: 300px;
+  }
+  
+  .slideimg {
+      position: absolute;
+      object-fit:cover;
+      top: 0;
+      left: 0;
+      min-height: 500px;
+     
+    border-radius: 20px;
+    border-bottom-right-radius: 20px;
+     
+  }
+  .back{
+      color: black;
+  }
+  .cardItem::-webkit-scrollbar {
+    display: none;
+ }
+ 
+ 
+ .carddecks{
+     display: flex;
+     overflow-x: auto; 
+     padding: 20px;  
+        background-color: #FFFFFF !important; 
+     
+       
+        
+ }
+ .img-fluid{
+    background-color: #FFFFFF;
+    flex-grow: 1;
+    object-fit:contain;
+    border-radius: 12px 12px 0 0 !important;
+    height: 108px;
+    
+}
+ .card{
+    border-radius: 12px !important;
+    background-color: #F3F3F3 ;
+    border:  #F3F3F3;
+    width: 132px;
+   
+   
+
+   
+
+ }
+ 
+
+ 
+ .wrcarddecksap .cardItem{
+     margin-right: 4px;
+     background-color:white;
+     
+ } 
+ .myimage{
+     height: 20%;
+     object-fit:contain;
+ } 
+ 
+ .NavICONS{
+     display: flex;
+     justify-content:space-around;
+       z-index: 5;
+ }
+ 
+ .forms{
+    border-radius: 25px ;
+    
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 280px;
+    height: 4px; 
+    justify-content: center;
+ }
+
+ .forms::-webkit-input-placeholder { 
+     font-family: 'Helvetica', FontAwesome, sans-serif;
+     background-color: #A8A8A8;
+     
+ }
+ .fa-bars{
+ font-size:"24px"
+ }
+ .input.empty {
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
+.fa-bars{
+    float: left;
+}
+ .chamgename{
+     color: black;
+ }
+ .rounf{
+     float: right;
+     clear: right;
+     border-radius: 50%;
+     width: 30px;
+     margin-right:10px;
+ }
+ .texts{
+     top: 0%;
+     float: left;
+     clear: left;
+ }
+ .badge-success{
+     background-color:#F6D798;
+    
+     color: white;
+ }
+ .texts{
+     
+    font-family: SF Pro Display;
+font-style: normal;
+font-weight: 600;
+font-size: 11px;
+line-height: 18px;
+
+color: #B6B6B6;
+
+
+
+ }
+ .cooo{
+     color: #3DAB85;
+     font-size: 25px;
+ }
+ .cools{
+    color: rgb(187, 165, 165);
+    background-color:  #3DAB85;
+    font-size: 20px;
+}
+.btn-poko-right{
+    background-color: #3DAB85;
+    color: white;
+    font-size: 10px;
+}
+.fa-angle-right{
+    font-size: 20px;
+}
+.card-body{
+    background-color: #F3F3F3;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    height: 124px;
+    
+}
+
+.carousel-inner{
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+   border-radius: 14px;
+   width: 300px;
+    
+    flex-wrap: wrap;
+margin-left: 10px;
+
+}
+
+
+.heades{
+    font-family: SF Pro Display;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 22px;
+    
+    color: #1A051D;
+}
+
+#changedd{
+    font-family: SF Pro Display;
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 28px;
+
+}
+#changesprice{ 
+    
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 18px;
+    color: #181725;
+}
+.delprice{
+    font-family: SF Pro Text;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 15px;
+    text-decoration-line: line-through;
+    
+    color: #CACACA;
+}
+#changeing{
+    font-family: SF Pro Text;
+    font-style: normal;
+    color: #181725;
+}
+.btn-cools{
+    background: #FFFFFF;
+border: 1px solid #CACACA;
+box-sizing: border-box;
+border-radius: 11px;
+width: 36px;
+height: 36.18px;
+}
+.img-fluid{
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+#daily{
+  
+font-style: normal;
+font-weight: 400;
+font-size: 15px;
+line-height: 18px;
+
+/* or 129% */
+display: flex;
+
+letter-spacing: 0.1px;
+
+/* Dark Deep */
+color: #181725;
+}
+#category{
+  
+
+
+
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 28px;
+
+letter-spacing: 0.1px;
+
+/* Color/Neutral/1 - Dark */
+color: #1A051D;
+}
+#timedaily{
+    
+font-style: normal;
+font-weight: 600;
+font-size: 11px;
+line-height: 18px;
+color: #B6B6B6;
+}
+#dailytitle{
+  
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 18px;
+letter-spacing: 0.1px;
+
+color: #181725;
+}
+.scan{
+    width: 16px;
+    height:16px;
+    border: 2px solid black;
+    border-radius: 4px;
+}
+.scans{
+    width: 19.5px;
+    height: 1.85px;
+    border: 2px solid #F3F3F3;
+}
+.scaned{
+    width: 19.5px;
+    height: 1.85px;
+    border: 1px solid black;
+}
+.back1{
+    width: 162px;
+height: 22px;
+    font-family: SF Pro Display;
+font-style: normal;
+font-weight: 600;
+font-size: 17px;
+line-height: 22px;
+
+/* identical to box height, or 129% */
+letter-spacing: 0.1px;
+
+color: #FFFFFF;
+}
+.back2{
+    width: 123px;
+height: 18px;
+
+
+/* Body/ 13 */
+font-family: SF Pro Display;
+font-style: normal;
+font-weight: normal;
+font-size: 13px;
+line-height: 18px;
+
+/* identical to box height, or 138% */
+
+color:#FFFFFF;
+}
+.btn-carousels{
+    width: 120px;
+height: 32px;
+position:absolute;
+right:30px;
+bottom: 10px;
+
+background: #F6D798;
+border-radius: 8px;
+}
+.back3{
+    width: 150px;
+height: 18px;
+font-family: SF Pro Display;
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+display: flex;
+
+color: #A9643D;
+}

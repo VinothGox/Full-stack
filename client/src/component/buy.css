@@ -1,0 +1,20 @@
+.details{
+    border-top-left-radius: 10px;
+   
+    
+   
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgb(207, 201, 201);
+    
+    width:400px;
+    
+    flex-wrap: wrap;
+
+
+}     
+.page{
+    color: black;
+}

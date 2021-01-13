@@ -1,0 +1,37 @@
+.weight{
+    color: rgb(145, 225, 240);
+}
+.babadge .badge-dangerdge{
+    text-align: right;
+
+}
+.title{
+    color: black;
+}
+.changes{
+    color: rgb(38, 202, 112);
+    text-align: left;
+}
+.card-deck{
+    background-color: white;
+}
+#changedd{
+    font-family: SF Pro Display;
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 28px;
+}
+#changesprice{
+    font-family: SF Pro Text;
+font-style: normal;
+font-weight: 600;
+font-size: 13px;
+line-height: 18px;
+}
+
+
+
+
+
+

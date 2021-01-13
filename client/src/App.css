@@ -1,0 +1,66 @@
+.App {
+  text-align: center;
+}
+
+.tab-content{
+  background: #fff;
+  
+
+  display: flex;
+   justify-content: space-between;
+   width: 400px; 
+   bottom: 0;
+   flex-wrap: wrap;
+}
+
+.tab{
+  background: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+}
+
+.tab i{
+  font-size: 1.2rem;
+}
+
+.tab p{
+  font-size: 14px;
+  margin-left:10px ;
+  max-width: 200px;
+}
+
+.mycontainer{
+  text-align: center;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+.fa-home{
+ color: rgb(80, 218, 137);
+
+}
+.homes{
+  color: rgb(80, 218, 137);;
+}
+.fa-search{
+  
+  color: rgb(80, 218, 137);
+}
+.homeed{
+  color: rgba(48, 41, 41, 0.445);
+}
+.fa-pizza-slice{
+  color: rgba(48, 41, 41, 0.445);
+}
+.fa-heart{
+  color: rgba(48, 41, 41, 0.445);
+}
+.fa-shopping-bag{
+  color: rgba(48, 41, 41, 0.445);
+}
