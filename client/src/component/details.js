@@ -12,6 +12,7 @@ import {Button} from "antd";
 import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
 
 
+
 export const Details=()=>{
 
 

@@ -2,13 +2,15 @@ import React, { useState,useEffect } from "react";
 import {useHistory}  from "react-router-dom";
 import axios from "axios";
 import "./addcard.css";
-
+import {Row,Col} from "antd";
+import { Card ,Space} from 'antd';
+import {Button} from "antd";
+import {RightOutlined,ShoppingCartOutlined,DeleteOutlined} from "@ant-design/icons";
 
 export const AddCard=()=>{
     const [finals,setFinals]=useState([]);
     const history=useHistory();
    
-
  useEffect(()=>{
     getcards();
         
@@ -38,7 +40,7 @@ export const AddCard=()=>{
             history.push({pathname:'/buycard',id:card_id,Price:price});
 
         }
-        const goHome=()=>{
+        const mainPage=()=>{
           history.push("/");
         }
         
@@ -49,17 +51,11 @@ export const AddCard=()=>{
         <div>
             
           
-            <div>
-            <div className="container p-2">
-                <div className="row">
-                    <div className="col">
-                        <div className="navitem">
-                            <button onClick={goHome} className="btn btn-poko"><i className="fas fa-arrow-left fa-lg" ></i></button>
-                            <img className="rounf" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
+            <div><br></br>
+            <div style={{paddingLeft:"10px"}}>
+  <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
   </div>
-                    </div>
-                </div>
-            </div>
+  <img className="rounfed" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
 
             <div>
                    <h1 className="font-weight-normal mt-2 text-center">Your Cart</h1>
@@ -67,33 +63,43 @@ export const AddCard=()=>{
                    <h5>Total.No.of.Products:{finals.length}</h5>
                    </div>
   
-   {finals.map(results=>(
-                 
-  
-  <div className="card col-md-3 float-left m-4" style={{width: "18rem"}}>
-  <img className="card-img-topsss" src={`http://localhost:8002/${results.images}`} alt=""/>
-  <div className="card-body">
-    <h5 className="card-title text-center">{results.title}</h5>
-    <div className="d-flex justify-content-around">
-    <p className="card-text">Rs.{results.price}-/-</p>
-    <div>
-    <p className="badge">{results.rating}</p>
-    </div>
-    </div>
-  
+                   {finals.map(item=>(
+      
+     
+      <div className="keyss" key={item.name} >
+         <div className="d-flex justify-content-center">
+        <Space direction="vertical">
+       
+     <Card
     
-    <button className="btn-danger" onClick={() =>{if(window.confirm('Are you sure to delete this record?')) {deleteCards(results.card_id)};}}>Remove</button>&nbsp;&nbsp;&nbsp;
-    
-    <button className="btn-primary" onClick={()=>goBuy(results.card_id,results.price)}>BuyNow</button>
-    
-  </div>
+    style={{ width:"232px",height:"220px",borderRadius:"12px",border:"#f3f3f3;",backgroundColor:"#f3f3f3"}}
+    bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
+    cover={
+      <div className="d-flex justify-content-center"><img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
+  >
+   <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
+                        <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
+         <h1             
+     style={{marginLeft:"-14px",marginTop:"-10px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1>
+     <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"150px",left:"80%"}}>
+    <h2 style={{fontFamily:"San Francisco"}} id="changesprice">{item.price}d</h2>
    
+    </div>
+    <Button  type="danger" onClick={() =>{if(window.confirm('Are you sure to delete this record?')) {deleteCards(item.card_id)};}} style={{borderRadius:"10px",border:"#3DAB85"}} icon={<DeleteOutlined />} ></Button>
   
-</div>
- 
-           
-           
-            ))}
+    <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"180px"}}>
+      
+     <Button  type="primary" onClick={()=>goBuy(item.card_id,item.price)} style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+     </div>
+  </Card><br></br>
+  
+  </Space>
+  </div>
+  
+             
+             </div>
+   
+    ))} 
              </div>
             </div>
             </div>

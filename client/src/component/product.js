@@ -7,14 +7,16 @@ import {
   Input,
   Button,
   Select,
-  Upload
+  Upload,
+  message
 } from 'antd';
-
+import "./product.css";
 
 
 
 export const Product=()=>{
   
+  const {Dragger}=Upload;
    const {Option} =Select;
     const [componentSize, setComponentSize] = useState('default');
   
@@ -27,27 +29,6 @@ export const Product=()=>{
         })
       }, []);
     
-
-const [product,setProduct]=useState({
-    title:'',
-    description:'',
-    price:'',
-    weight:'',
-    rating:'',
-    good:'',
-    bad:'',
-    category_id:''
-})
-const [imgdata,setImgdata]=useState();
-
-
-const handlePhoto = (e) => {
-    const datas=e.target.files[0];
-    setImgdata(datas);
-    console.log(datas);
-   // setProduct({...product, photo: e.target.files[0]});
-}
-
       const onsubmit = async (value) => {
 
         const productImage=value.images.file;
@@ -61,75 +42,47 @@ const handlePhoto = (e) => {
           good:value.good,
           bad:value.bad,
         }
-       
-   console.log(productImage.originFileObj);
-   console.log(data1);
-    console.log(JSON.stringify(data1));
-
    const ProductData=new FormData();
    
    
    ProductData.append('title', data1.title);
    ProductData.append('description', data1.description);
    ProductData.append('price', data1.price);
-   ProductData.append('images',productImage);
+   ProductData.append('images',productImage.originFileObj);
    ProductData.append('weight', data1.weight);
    ProductData.append('rating', data1.rating);
    ProductData.append('good', data1.good);
    ProductData.append('bad', data1.bad);
    ProductData.append('category_id', data1.category_id);
-   
-  console.log(JSON.stringify(ProductData));
-   
- 
 
-     
-        /*try{
-
-            
-            const db = new FormData();
-            db.append('title', product.title);
-            db.append('description', product.description);
-            db.append('price', product.price);
-            db.append('images', imgdata);
-            db.append('weight', product.weight);
-            db.append('rating', product.rating);
-            db.append('good', product.good);
-            db.append('bad', product.bad);
-            db.append('category_id', product.category_id);
-            
-    
-            console.log(db);
-    const ans=await axios.post("http://localhost:8002/add",db);
+   const ans=await axios.post("http://localhost:8002/add",ProductData);
        
-    console.log(ans);
-   // history.push("/");
-
-
-
-    
-
-    
-          
-      
+    //console.log(ans);
+    message.success("Successfully Saved!!!")
+    history.push("/product");
     }
-    catch(err){
-        console.log(err);
-    }*/
-}
+  
+    const mainPage=()=>{
+      history.push("/");
+    }
 
     return(
         <div>
              <div><br></br><br></br>
+             <div style={{paddingLeft:"10px"}}>
+  <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
+  </div>
+  <img className="rounfed" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
+
          
-
-
+<div className="thebox">
+             
 <Form
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 14 }}
+        labelCol={{ span: 2 }}
+        wrapperCol={{ span: 2 }}
         layout="horizontal"
         initialValues={{ size: componentSize }}
-       style={{paddingLeft:"20px",paddingRight:"20px"}}
+       
         size={componentSize}
         onFinish={onsubmit}
       >
@@ -141,8 +94,9 @@ const handlePhoto = (e) => {
             message: 'Please input your title!',
           },
         ]}
+        style={{width:"250px"}}
         >
-          <Input placeholder="title" />
+          <Input placeholder="Title" />
         </Form.Item>
 
         <Form.Item name="description" 
@@ -152,8 +106,9 @@ const handlePhoto = (e) => {
             message: 'Please input your description!',
           },
         ]}
+        style={{width:"250px"}}
         >
-          <Input placeholder="description" />
+          <Input placeholder="Description" />
         </Form.Item>
 
         <Form.Item name="price" 
@@ -163,6 +118,7 @@ const handlePhoto = (e) => {
             message: 'Please input your price!',
           },
         ]}
+        style={{width:"250px"}}
         >
           <Input placeholder="price" />
         </Form.Item>
@@ -174,9 +130,10 @@ const handlePhoto = (e) => {
             message: 'Please select your category!',
           },
         ]}
+        style={{width:"250px"}}
       >
         <Select
-          placeholder="Select a option and change input text above"
+          placeholder="Select your Category"
         >
          {
                   categoryItems.map((categoryItem, index) => (
@@ -193,6 +150,7 @@ const handlePhoto = (e) => {
             message: 'Please input your weight!',
           },
         ]}
+        style={{width:"250px"}}
         >
           <Input placeholder="weight" />
         </Form.Item>
@@ -204,8 +162,9 @@ const handlePhoto = (e) => {
             message: 'Please input your rating!',
           },
         ]}
+        style={{width:"250px"}}
         >
-          <Input placeholder="rating" />
+          <Input placeholder="Rating" />
         </Form.Item>
 
         <Form.Item name="good" 
@@ -215,8 +174,9 @@ const handlePhoto = (e) => {
             message: 'Please input your good!',
           },
         ]}
+        style={{width:"250px"}}
         >
-          <Input  placeholder="good" />
+          <Input  placeholder="Good" />
         </Form.Item>
 
         <Form.Item name="bad" 
@@ -226,24 +186,31 @@ const handlePhoto = (e) => {
             message: 'Please input your bad!',
           },
         ]}
+        style={{width:"250px"}}
         >
-          <Input placeholder="bad" />
+          <Input placeholder="Bad" />
         </Form.Item>
+        <div className="d-flex justify-content-center">
         <Form.Item
         name="images"
       >
         <Upload>
-          <Button icon={<UploadOutlined />}>Click to upload</Button>
+          <Button icon={<UploadOutlined />}>Click to upload Image</Button>
         </Upload>
-      </Form.Item><br></br>
-      <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
+       
+      </Form.Item> </div>
+      <div className="d-flex justify-content-center">
+      <Form.Item >
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
+      </div>
         </Form>
         </div>
         </div>
+        </div>
+        
 
     )
 }
