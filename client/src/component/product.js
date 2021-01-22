@@ -1,18 +1,23 @@
 import React, { useState,useEffect } from "react";
 import {Link,useHistory} from "react-router-dom";
 import axios from "axios";
+import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Upload
+} from 'antd';
+
+
+
 
 export const Product=()=>{
-
-    
-   /*   const [title,setTitle]=useState();
-      const [description,setDescription]=useState();
-      const [price,setPrice]=useState();
-      const [images,setImages]=useState();
-      const [weight,setWeight]=useState();
-      const [rating,setRating]=useState();
-      const [good,setGood]=useState();
-      const [bad,setBad]=useState();*/
+  
+   const {Option} =Select;
+    const [componentSize, setComponentSize] = useState('default');
+  
       const history=useHistory();
       const [categoryItems, SetcategoryItems] = useState([]);
 
@@ -34,9 +39,7 @@ const [product,setProduct]=useState({
     category_id:''
 })
 const [imgdata,setImgdata]=useState();
-const handleChange = (e) => {
-    setProduct({...product, [e.target.name]: e.target.value});
-}
+
 
 const handlePhoto = (e) => {
     const datas=e.target.files[0];
@@ -45,10 +48,43 @@ const handlePhoto = (e) => {
    // setProduct({...product, photo: e.target.files[0]});
 }
 
-      const onsubmit = async (e) => {
-        e.preventDefault();
+      const onsubmit = async (value) => {
+
+        const productImage=value.images.file;
+        const data1={
+          title:value.title,
+          description:value.description,
+          price:value.price,
+          category_id:value.category_id,
+          weight:value.weight,
+          rating:value.rating,
+          good:value.good,
+          bad:value.bad,
+        }
+       
+   console.log(productImage.originFileObj);
+   console.log(data1);
+    console.log(JSON.stringify(data1));
+
+   const ProductData=new FormData();
+   
+   
+   ProductData.append('title', data1.title);
+   ProductData.append('description', data1.description);
+   ProductData.append('price', data1.price);
+   ProductData.append('images',productImage);
+   ProductData.append('weight', data1.weight);
+   ProductData.append('rating', data1.rating);
+   ProductData.append('good', data1.good);
+   ProductData.append('bad', data1.bad);
+   ProductData.append('category_id', data1.category_id);
+   
+  console.log(JSON.stringify(ProductData));
+   
+ 
+
      
-        try{
+        /*try{
 
             
             const db = new FormData();
@@ -63,11 +99,11 @@ const handlePhoto = (e) => {
             db.append('category_id', product.category_id);
             
     
-            console.log(product);
+            console.log(db);
     const ans=await axios.post("http://localhost:8002/add",db);
        
     console.log(ans);
-    history.push("/");
+   // history.push("/");
 
 
 
@@ -79,47 +115,135 @@ const handlePhoto = (e) => {
     }
     catch(err){
         console.log(err);
-    }
+    }*/
 }
 
     return(
         <div>
-             <div>
-         <div className="container my-5 ">
+             <div><br></br><br></br>
+         
 
-<p className="text-center font-weight-normal display-4" style={{ color:"black"}}>Add Product</p>
-<div className="d-flex justify-content-center">
-<form style={{width:"50%"}} onSubmit={onsubmit}>
-<input type="text" name="title" placeholder="title" onChange={handleChange} value={product.title} className="form-control my-3" required/>
 
-<input type="text" name="description" placeholder="Description" value={product.description} onChange={handleChange} className="form-control my-3" required/>
-<select onChange={handleChange} value={product.category_id} className="form-control my-3" name="category_id" required>
-                <option value="-1">Select Category</option>
-                {
+<Form
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 14 }}
+        layout="horizontal"
+        initialValues={{ size: componentSize }}
+       style={{paddingLeft:"20px",paddingRight:"20px"}}
+        size={componentSize}
+        onFinish={onsubmit}
+      >
+       
+        <Form.Item name="title" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your title!',
+          },
+        ]}
+        >
+          <Input placeholder="title" />
+        </Form.Item>
+
+        <Form.Item name="description" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your description!',
+          },
+        ]}
+        >
+          <Input placeholder="description" />
+        </Form.Item>
+
+        <Form.Item name="price" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your price!',
+          },
+        ]}
+        >
+          <Input placeholder="price" />
+        </Form.Item>
+        <Form.Item
+        name="category_id"
+        rules={[
+          {
+            required: true,
+            message: 'Please select your category!',
+          },
+        ]}
+      >
+        <Select
+          placeholder="Select a option and change input text above"
+        >
+         {
                   categoryItems.map((categoryItem, index) => (
-                    <option key={index} value={categoryItem.category_id} className="form-control m-2" >{categoryItem.name}</option>
+                    <Option key={index} value={categoryItem.category_id} >{categoryItem.name}</Option>
                   ))
                 }
-              </select>
+        </Select>
+      </Form.Item>
 
-<input type="text" name="price" placeholder="price" onChange={handleChange} value={product.price} className="form-control my-3" required/>
-<input type="file" name="image" placeholder="image" onChange={handlePhoto}  className="form-control my-3" required/>
-<input type="text" name="weight" placeholder="Weight" onChange={handleChange} value={product.weight} className="form-control my-3" required/>
-<input type="text" name="rating" placeholder="Rating" onChange={handleChange} value={product.rating} className="form-control my-3" required/>
-<input type="text" name="good" placeholder="Advandage" onChange={handleChange} value={product.good} className="form-control my-3" required/>
-<input type="text" name="bad" placeholder="Disadvandage" onChange={handleChange} value={product.bad} className="form-control my-3" required/>
+        <Form.Item name="weight" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your weight!',
+          },
+        ]}
+        >
+          <Input placeholder="weight" />
+        </Form.Item>
 
-<div className="d-flex justify-content-center">
- 
-<button className="btn btn-success px-5">submit</button>
-</div>
-<div className="d-flex justify-content-center">
-<Link to="/camp" className="text-center">Back to Home</Link>
-</div>
-</form>
-</div>
-</div>
-</div>
+        <Form.Item name="rating" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your rating!',
+          },
+        ]}
+        >
+          <Input placeholder="rating" />
+        </Form.Item>
+
+        <Form.Item name="good" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your good!',
+          },
+        ]}
+        >
+          <Input  placeholder="good" />
+        </Form.Item>
+
+        <Form.Item name="bad" 
+         rules={[
+          {
+            required: true,
+            message: 'Please input your bad!',
+          },
+        ]}
+        >
+          <Input placeholder="bad" />
+        </Form.Item>
+        <Form.Item
+        name="images"
+      >
+        <Upload>
+          <Button icon={<UploadOutlined />}>Click to upload</Button>
+        </Upload>
+      </Form.Item><br></br>
+      <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+        </Form>
         </div>
+        </div>
+
     )
 }

@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import {Link,useHistory}  from "react-router-dom";
+import {useHistory}  from "react-router-dom";
 import axios from "axios";
 import "./addcard.css";
 
@@ -22,7 +22,7 @@ export const AddCard=()=>{
           //console.log(response.data);
           
         }
-        const deletecards=async(card_id)=>{
+        const deleteCards=async(card_id)=>{
          try{
             const ans=await axios.delete(`http://localhost:8002/deletecard/${card_id}`);
             console.log("successfully delete it!");
@@ -34,11 +34,11 @@ export const AddCard=()=>{
          }
 
         }
-        const gobuy=(card_id,price)=>{
+        const goBuy=(card_id,price)=>{
             history.push({pathname:'/buycard',id:card_id,Price:price});
 
         }
-        const gohome=()=>{
+        const goHome=()=>{
           history.push("/");
         }
         
@@ -54,7 +54,7 @@ export const AddCard=()=>{
                 <div className="row">
                     <div className="col">
                         <div className="navitem">
-                            <button onClick={gohome} className="btn btn-poko"><i className="fas fa-arrow-left fa-lg" ></i></button>
+                            <button onClick={goHome} className="btn btn-poko"><i className="fas fa-arrow-left fa-lg" ></i></button>
                             <img className="rounf" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
   </div>
                     </div>
@@ -71,7 +71,7 @@ export const AddCard=()=>{
                  
   
   <div className="card col-md-3 float-left m-4" style={{width: "18rem"}}>
-  <img className="card-img-topsss" src={`http://localhost:8002/${results.images}`}/>
+  <img className="card-img-topsss" src={`http://localhost:8002/${results.images}`} alt=""/>
   <div className="card-body">
     <h5 className="card-title text-center">{results.title}</h5>
     <div className="d-flex justify-content-around">
@@ -82,9 +82,9 @@ export const AddCard=()=>{
     </div>
   
     
-    <button className="btn-danger" onClick={() =>{if(window.confirm('Are you sure to delete this record?')) {deletecards(results.card_id)};}}>Remove</button>&nbsp;&nbsp;&nbsp;
+    <button className="btn-danger" onClick={() =>{if(window.confirm('Are you sure to delete this record?')) {deleteCards(results.card_id)};}}>Remove</button>&nbsp;&nbsp;&nbsp;
     
-    <button className="btn-primary" onClick={()=>gobuy(results.card_id,results.price)}>BuyNow</button>
+    <button className="btn-primary" onClick={()=>goBuy(results.card_id,results.price)}>BuyNow</button>
     
   </div>
    

@@ -13,7 +13,7 @@ const Op = db.Sequelize.Op;
 
 //add item
 exports.create= async(req, res) => {
-  // console.log(req.file.filename);
+
 
     try{
       const fileName =  req.file.filename;
@@ -28,18 +28,13 @@ exports.create= async(req, res) => {
             good:req.body.good,
             bad:req.body.bad,
             category_id:req.body.category_id
-
-
           };
-    
          const datas=await Product.create(producted);
             res.json(datas);
            
     }
-
     catch(err){
-        console.log(err);
-
+      res.status(500).json({error:err});
     }
   };
 // categoryy
@@ -61,7 +56,8 @@ exports.create= async(req, res) => {
          
   }
   catch(err){
-    res.json(err);
+    res.status(500).json({error:err});
+;
   }
 }*/
   
@@ -76,9 +72,8 @@ exports.findAll = async(req, res) => {
    res.json(alldata);
    
     }
-
     catch(err){
-        res.json(err);
+      res.status(500).json({error:err});
     }
   };
 
@@ -86,28 +81,24 @@ exports.findAll = async(req, res) => {
   exports.findOne =async (req, res) => {
       try{
     const id = req.params.id;
-  
  const onedata=await  Product.findByPk(id);
-
- const getgood=onedata.good;
- const getbad=onedata.bad;
- const getgood1=getgood.split(",");
- const getbad1=getbad.split(",");
+ const getGood=onedata.good;
+ const getBad=onedata.bad;
+ const getGood1=getGood.split(",");
+ const getBad1=getBad.split(",");
  var stringArray = new Array();
  var stringArrays = new Array();
-for(var i =0; i < getgood1.length; i++){
-    stringArray.push(getgood1[i]);
+for(var i =0; i < getGood1.length; i++){
+    stringArray.push(getGood1[i]);
 }
-for(var i =0; i < getbad1.length; i++){
-  stringArrays.push(getbad1[i]);
+for(var i =0; i < getBad1.length; i++){
+  stringArrays.push(getBad1[i]);
 }
- 
  res.json({data:onedata,weig:stringArray,bads:stringArrays});
       }
       catch(err){
-          res.json(err);
+        res.status(500).json({error:err});
       }
-     
   };
 
   
@@ -117,45 +108,38 @@ for(var i =0; i < getbad1.length; i++){
 exports.findcate = async(req, res) => {
     try{
  const items=await Category.findAll()
-
  res.json(items);
     }
-
     catch(err){
-        res.json(err);
+      res.status(500).json({error:err});
     }
-     
   };
 
+  
  //get all item
 exports.findAllItem = async(req, res) => {
     try{
  const itemss=await Product.findAll()
 
  res.json(itemss);
- //console.log(itemss);
     }
 
     catch(err){
-        res.json(err);
+      res.status(500).json({error:err});
     }
-     
   };
 
 
   //add card
   exports.addcard=async(req,res)=>{
      try{
-          req.body.item_id=req.params.id;
-         
-        
+          req.body.item_id=req.params.id;  
      const datas=await Card.create(req.body);
         res.json(datas);
-       
-
     }
 catch(err){
-    console.log(err);
+  res.status(500).json({error:err});
+
 
 }
 
@@ -165,13 +149,11 @@ catch(err){
   exports.ratings=async(req,res)=>{
     try{
       const ans=await Product.findAll({where:{rating:{[Op.gte]: 4.0}}})
-
       res.json(ans);
-  
-  
     }
     catch(err){
-      res.json(err);
+      res.status(500).json({error:err});
+
     }
   }
 
@@ -181,26 +163,22 @@ catch(err){
       
       const getcard=await Card.findAll();
       res.json(getcard);
-
     }
     catch(err){
-      res.json(err);
+      res.status(500).json({error:err});
     }
   }
 
   //get one card
   exports.getone=async(req,res)=>{
-   
       try{
         const id = req.params.id;
-      
      const onedatas=await  Card.findByPk(id);
      res.json(onedatas);
-
-
     }
     catch(err){
-      res.json(err);
+      res.status(500).json({error:err});
+
     }
   }
 
@@ -208,31 +186,26 @@ catch(err){
   exports.deletecard=async(req,res)=>{
     try{
       const id=req.params.id;
-
       const ans=await Card.destroy({
         where: { card_id: id }
       });
-
       res.json("delet the card!!");
     }
     catch(err)
     {
-      res.json(err);
-
+      res.status(500).json({error:err});
     }
   }
-
+//allrecipe
   exports.allrecipes = async(req, res) => {
     try{
  const items=await Recipe.findAll()
 
  res.json(items);
     }
-
     catch(err){
-        res.json(err);
+      res.status(500).json({error:err});
     }
      
   };
 
- // add card to card details 

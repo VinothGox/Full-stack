@@ -13,8 +13,8 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull:false,
         references: {
-            model: 'users', // 'persons' refers to table name
-            key: 'email', // 'id' refers to column name in persons table
+            model: 'users', 
+            key: 'email', 
          }
        }
     

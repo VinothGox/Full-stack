@@ -1,22 +1,8 @@
-import React, { useState } from 'react'
-// import Fab from '@material-ui/core/Fab';
-// import HomeIcon from '@material-ui/icons/Home';
-// import SearchIcon from '@material-ui/icons/Search';
-// import LocalMallIcon from '@material-ui/icons/LocalMall';
-// import PersonIcon from '@material-ui/icons/Person';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import React from 'react'
+
 import { Link,useHistory } from 'react-router-dom';
 import './App.css';
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: "#ffffff",
-        },
-        secondary: {
-            main: '#ffffff',
-        },
-    },
-});
+
 const Bottombar = () => {
 
 
@@ -25,7 +11,7 @@ const Bottombar = () => {
     const serached=()=>{
         history.push("/search")
     }
-   
+
     return (
         <div className="mycontainer">
             <div className="container">
@@ -35,13 +21,13 @@ const Bottombar = () => {
                         <div className="tab">
                             <Link to='/' style={{ textDecoration: 'none'}}>
                                <i className="fas fa-home" ></i>
-                               <p className="homes">Home</p>
+                               <p className="homes" style={{fontFamily:"San Francisco"}}>Home</p>
                             </Link>
                         </div>
                         <div className="tab">
                             <Link to='/dailyCook' style={{ textDecoration: 'none'}}>
                                <i className="fas fa-pizza-slice" ></i>
-                               <p className="homeed">cook</p>
+                               <p className="homeed" style={{fontFamily:"San Francisco"}}>cook</p>
                             </Link>
                         </div>
                         <div className="tab">
@@ -53,13 +39,13 @@ const Bottombar = () => {
                         <div className="tab">
                             <Link to='/cart'>
                             <i className="fas fa-heart" style={{ textDecoration: 'none'}}></i>
-                            <p className="homeed">favourite</p>
+                            <p className="homeed" style={{fontFamily:"San Francisco"}}>favourite</p>
                             </Link>
                         </div>
                         <div className="tab">
                             <Link to='/addcard'>
                             <i className="fas fa-shopping-bag" style={{ textDecoration: 'none'}}></i>
-                            <p className="homeed">card</p>
+                            <p className="homeed" style={{fontFamily:"San Francisco"}}>card</p>
                             </Link>
                         </div>
                       

@@ -1,5 +1,5 @@
-import React,{useEffect,useContext} from "react";
-import {BrowserRouter,Switch,Route,Link} from "react-router-dom";
+import React,{useContext} from "react";
+import {BrowserRouter,Switch,Route} from "react-router-dom";
 import './App.css';
 import {Home} from "./component/home";
 import {Product} from "./component/product";
@@ -13,18 +13,8 @@ import Bottombar from "./bar";
 function App() {
   
   const main=useContext(productcontext);
-  const [details,setDetails]=main.detail;
-  const [searchs,setSearchs]=main.search;
-  const [cook,setCook]=main.cook;
 
-
-  const logs=()=>{
-    setDetails();
-    setSearchs();
-    setCook();
-
-
-  }
+  
   return (
     
     <div>

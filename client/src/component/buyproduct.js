@@ -1,11 +1,10 @@
-import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
-import { colors } from "@material-ui/core";
+
 import Axios from "axios";
 import React, { useState,useEffect } from "react";
 import {useHistory} from "react-router-dom";
 import "./buy.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartPlus,faHeart } from '@fortawesome/free-solid-svg-icons'
+import {faHeart } from '@fortawesome/free-solid-svg-icons'
 
  
 export const BuyProduct=(props)=>{
@@ -18,11 +17,11 @@ export const BuyProduct=(props)=>{
 
  
  useEffect(()=>{
-    buycard();
+    buyCard();
     
     }, []);
 
-    const buycard=async()=>{
+    const buyCard=async()=>{
         try{
             const main=await Axios.get(`http://localhost:8002/getonecard/${props.location.id}`);
             setBuys(main.data);
@@ -51,7 +50,7 @@ export const BuyProduct=(props)=>{
         setMoney(amounts);
 
     }
-    const gohomes=()=>{
+    const goToHome=()=>{
         history.push("/addcard");
     }
     
@@ -63,7 +62,7 @@ export const BuyProduct=(props)=>{
                 <div className="row">
                     <div className="col">
                         <div className="navitem">
-                        <button onClick={gohomes} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
+                        <button onClick={goToHome} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
                           <img className="rounf" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
   </div>
                     </div>

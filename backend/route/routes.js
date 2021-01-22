@@ -6,7 +6,7 @@ const upload=require("../middleware/upload");
 const {create,ratings,allrecipes,getone,deletecard,cards,findcate,findAll,findOne,findAllItem,addcard} =require("../controller/product");
 
 router.post("/add",upload.single('images'),create);
-//router.post("/category",upload.single('images'),create);
+
 router.get("/all",findAll);
 router.get("/get/:id",findOne);
 router.get("/getall",findAllItem);

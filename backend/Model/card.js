@@ -14,8 +14,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull:false,
             references: {
-                model: 'products', // 'persons' refers to table name
-                key: 'item_id', // 'id' refers to column name in persons table
+                model: 'products', 
+                key: 'item_id', 
              }
         },
         cards_id:{
@@ -23,8 +23,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull:false,
             references: {
-                model: 'cards', // 'persons' refers to table name
-                key: 'cards_id', // 'id' refers to column name in persons table
+                model: 'cards', 
+                key: 'cards_id', 
              }
         },
     
