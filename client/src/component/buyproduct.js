@@ -12,7 +12,7 @@ export const BuyProduct=(props)=>{
     const history=useHistory();
 
  const [buys,setBuys]=useState([]);
- const [count,setCount]=useState(0);
+ const [count,setCount]=useState();
  const [money,setMoney]=useState(props.location.Price);
  const [discount,setDiscount]=useState(props.location.Price)
 
@@ -24,8 +24,9 @@ export const BuyProduct=(props)=>{
 
     const buyCard=async()=>{
         try{
-            const main=await Axios.get(`http://localhost:8002/getonecard/${props.location.id}`);
+            const main=await Axios.get(`http://76ea209d3fcc.ngrok.io/${props.location.id}`);
             setBuys(main.data);
+            setCount(main.data.quantity);
             //console.log(main.data);
         }
         catch(err){
@@ -35,20 +36,22 @@ export const BuyProduct=(props)=>{
     }
     const plus=()=>{
         const sum=count+1;
-      const  pricetot = parseInt(money);
-      const  pricetots = parseInt(discount)
+      const  pricetot = parseFloat(money);
+      const  pricetots = parseFloat(discount)
         const amount=pricetots+pricetot;
+        const amounts=amount.toFixed(3);
         setCount(sum);
-        setMoney(amount);
+        setMoney(amounts);
 
     }
     const mini=()=>{
         const sum=count-1;
-        const  pricetot = parseInt(money);
-        const  pricetots = parseInt(discount);
-        const amounts=pricetot-pricetots;
+        const  pricetot = parseFloat(money);
+        const  pricetots = parseFloat(discount);
+        const amounted=pricetot-pricetots;
+        const amounteds=amounted.toFixed(3);
         setCount(sum);
-        setMoney(amounts);
+        setMoney(amounteds);
 
     }
     const goToHome=()=>{
@@ -67,7 +70,7 @@ export const BuyProduct=(props)=>{
             <div className="d-flex justify-content-center">
         
         <div className="detailed">
-            <img src={`http://localhost:8002/${buys.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
+            <img src={`http://76ea209d3fcc.ngrok.io/${buys.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
            
                <div className="card-bodys"><br></br>
                                    <div className="puttitle" style={{marginLeft:"10px",fontFamily:"San Francisco"}}>{buys.title}</div>

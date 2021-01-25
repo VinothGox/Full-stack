@@ -29,7 +29,7 @@ export const Search=(props)=>{
         }, []);
         
         const searchProduct=async()=>{
-          const response=await axios.get(`http://localhost:8002/all?title=${serachitem}`);
+          const response=await axios.get(`http://76ea209d3fcc.ngrok.io/all?title=${serachitem}`);
          
          
          setResult(response.data);
@@ -38,7 +38,7 @@ export const Search=(props)=>{
         }
      
         const getTopSellings=async()=>{
-          const gettop=await axios.get(`http://localhost:8002/getrating`);
+          const gettop=await axios.get(`http://76ea209d3fcc.ngrok.io/getrating`);
           setSellings(gettop.data);
         
         }
@@ -85,7 +85,7 @@ export const Search=(props)=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
@@ -125,7 +125,7 @@ export const Search=(props)=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>

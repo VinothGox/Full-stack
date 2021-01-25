@@ -132,16 +132,48 @@ exports.findAllItem = async(req, res) => {
 
   //add card
   exports.addcard=async(req,res)=>{
-     try{
-          req.body.item_id=req.params.id;  
+     
+  try{
+      const getBody=req.body;
+
+      const getTitle=getBody.title;
+      const getCardsId=getBody.cards_id;
+      const getPrice=getBody.price;
+      console.log(getTitle);
+      console.log(getCardsId)
+    
+      const getCardUser=await Card.findOne({ where: {cards_id:getCardsId,title: getTitle} });
+     //console.log(getCardUser.title);
+     let finalAmount=0;
+    if(getCardUser){
+      var a=parseFloat(getCardUser.price);
+      var b=parseFloat(getPrice);
+       finalAmount=a+b;
+       finalAmount=finalAmount.toFixed(3);
+       const finalAns=finalAmount.toString();
+       var changeQuantity=getCardUser.quantity+1;
+       //console.log(finalAns);
+       
+    const updatePrice=await Card.update({price:finalAns,quantity:changeQuantity},{where: {cards_id:getCardsId,title: getTitle}});
+      // console.log(updatePrice);
+      res.json({message:"already add the card"});
+    }
+    else{
+        req.body.item_id=req.params.id;  
      const datas=await Card.create(req.body);
         res.json(datas);
+      }
+
+
+
     }
-catch(err){
-  res.status(500).json({error:err});
+       //   req.body.item_id=req.params.id;  
+    // const datas=await Card.create(req.body);
+    //    res.json(datas);
+    catch(err){
+      res.status(401).json(err);
+    }
 
-
-}
 
   }
 

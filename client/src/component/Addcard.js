@@ -17,7 +17,7 @@ export const AddCard=()=>{
         }, []);
         
         const getcards=async()=>{
-          const response=await axios.get(`http://localhost:8002/allcards`);
+          const response=await axios.get(`http://76ea209d3fcc.ngrok.io/allcard`);
          
          
          setFinals(response.data);
@@ -26,7 +26,7 @@ export const AddCard=()=>{
         }
         const deleteCards=async(card_id)=>{
          try{
-            const ans=await axios.delete(`http://localhost:8002/deletecard/${card_id}`);
+            const ans=await axios.delete(`http://76ea209d3fcc.ngrok.io/deletecard/${card_id}`);
             console.log("successfully delete it!");
            history.push("/");
             
@@ -75,22 +75,37 @@ export const AddCard=()=>{
     style={{ width:"232px",height:"220px",borderRadius:"12px",border:"#f3f3f3;",backgroundColor:"#f3f3f3"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
     cover={
-      <div className="d-flex justify-content-center"><img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
+      <div className="d-flex justify-content-center"><img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
          <h1             
      style={{marginLeft:"-14px",marginTop:"-10px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1>
-     <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"150px",left:"80%"}}>
-    <h2 style={{fontFamily:"San Francisco"}} id="changesprice">{item.price}d</h2>
-   
+     <div style={{paddingRight:"10px",position:"absolute",left:"78%",height:"32px",width:"32px",top:"150px"}}>
+    <h2 style={{fontFamily:"San Francisco", marginRight:"10px"}} id="changesprice">{item.price}d</h2>
     </div>
-    <Button  type="danger" onClick={() =>{if(window.confirm('Are you sure to delete this record?')) {deleteCards(item.card_id)};}} style={{borderRadius:"10px",border:"#3DAB85"}} icon={<DeleteOutlined />} ></Button>
-  
-    <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"180px"}}>
-      
-     <Button  type="primary" onClick={()=>goBuy(item.card_id,item.price)} style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+    <div style={{paddingRight:"10px",position:"absolute",left:"65%",height:"32px",width:"32px",top:"150px",left:"80%"}}>
+   
+    <h1             
+     style={{marginLeft:"-175px",textAlign:"left",marginTop:"26px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>quantity: {item.quantity}</h1>
      </div>
+  
+  
+    <Row gutter={0}>
+    <div style={{paddingRight:"10px",position:"absolute",left:"60%",height:"32px",width:"32px",top:"180px"}}>
+   
+      <Col className="gutter-row" span={6}>
+      <Button  type="danger" onClick={() =>{if(window.confirm('Are you sure to delete this record?')) {deleteCards(item.card_id)};}} style={{borderRadius:"10px",border:"#3DAB85"}} icon={<DeleteOutlined />} ></Button>
+    </Col>
+    </div>
+    <div style={{paddingRight:"10px",position:"absolute",left:"84%",height:"32px",width:"32px",top:"180px"}}>
+   
+     <Col className="gutter-row" span={6}>
+     <Button  type="primary" onClick={()=>goBuy(item.card_id,item.price)} style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+      </Col>
+      </div>
+    </Row>
+      
   </Card><br></br>
   
   </Space>
@@ -101,7 +116,7 @@ export const AddCard=()=>{
    
     ))} 
              </div>
-            </div>
+            </div><br></br><br></br><br/><br/><br/>
             </div>
          
          

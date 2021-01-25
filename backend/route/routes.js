@@ -13,7 +13,7 @@ router.get("/getall",findAllItem);
 router.get("/allcategory",findcate);
 router.post("/addcard/:id",addcard);
 router.get("/getrating",ratings);
-router.get("/allcards",cards);
+router.get("/allcard",cards);
 router.delete("/deletecard/:id",deletecard);
 router.get("/getonecard/:id",getone);
 router.get("/allrecipe",allrecipes);

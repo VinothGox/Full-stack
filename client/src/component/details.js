@@ -8,7 +8,7 @@ import { faCartPlus,faHeart } from '@fortawesome/free-solid-svg-icons'
 
 import { Row, Col } from 'antd';
 import { Card } from 'antd';
-import {Button} from "antd";
+import {Button,message} from "antd";
 import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
 
 
@@ -24,6 +24,7 @@ export const Details=()=>{
     const [results,setResults]=useState([]);
     const [recipess,setRecipe]=useState([]);
     const [items,setItems]=useState([]);
+    const [demo,setDemo]=useState(2);
     
     const initialState = { 
       title:'',
@@ -51,7 +52,7 @@ export const Details=()=>{
      },[]);
 
     const getDetails=async()=>{
-        const getdetail=await axios.get(`http://localhost:8002/get/${details}`);
+        const getdetail=await axios.get(`http://76ea209d3fcc.ngrok.io/get/${details}`);
        setResults(getdetail.data.data);
        
         setTemp(getdetail.data.weig);
@@ -62,7 +63,7 @@ export const Details=()=>{
       
      
 const getRecipe=async()=>{
-  const response=await axios.get(`http://localhost:8002/allrecipe`);
+  const response=await axios.get(`http://76ea209d3fcc.ngrok.io/allrecipe`);
  
  //console.log(response.data);
   setRecipe(response.data);
@@ -70,7 +71,7 @@ const getRecipe=async()=>{
 
 
       const getproducts=async()=>{
-        const getproduct=await axios.get(`http://localhost:8002/getall`);
+        const getproduct=await axios.get(`http://76ea209d3fcc.ngrok.io/getall`);
        
        
        setItems(getproduct.data);
@@ -97,15 +98,23 @@ const getRecipe=async()=>{
           weight:results.weight,
           rating:results.rating,
           good:results.good,
-          bad:results.bad
+          bad:results.bad,
+          cards_id:demo
         }
-        console.log(produ);
+       
        
 
 
-       const ans1=await axios.post(`http://localhost:8002/addcard/${results.item_id}`,produ);
+       const ans1=await axios.post(`http://76ea209d3fcc.ngrok.io/addcard/${results.item_id}`,produ);
         console.log(ans1);
+        if(ans1.data.message==="already add the card"){
+        message.success("already add the cart!!!")
         history.push("/addcard");
+        }
+        else{
+          message.success("Sucessfully add the cart")
+        }
+      //  history.push("/addcard");
        
       
 
@@ -130,7 +139,7 @@ const getRecipe=async()=>{
       <div className="d-flex justify-content-center">
         
 <div className="detailed">
-    <img src={`http://localhost:8002/${results.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
+    <img src={`http://76ea209d3fcc.ngrok.io/${results.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
    
        <div className="card-bodys"><br></br>
                            <div className="puttitle" style={{marginLeft:"10px",fontFamily:"San Francisco"}}>{results.title}</div>
@@ -268,7 +277,7 @@ const getRecipe=async()=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>

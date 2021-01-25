@@ -23,7 +23,7 @@ export const Home=()=>{
     const [selling,setSelling]=useState([]);
     const [category,setCotegory]=useState([]);
     const [details,setDetails]=main.detail;
-    const [searchs,setSearchs]=main.search;
+    const [searched,setSearched]=useState();
     const [cook,setCook]=main.cook;
    
 
@@ -38,7 +38,7 @@ export const Home=()=>{
       }, []);
       
       const getCategory=async()=>{
-        const getCategory=await axios.get(`http://localhost:8002/allcategory`);
+        const getCategory=await axios.get(`http://76ea209d3fcc.ngrok.io/allcategory`);
        
        // setRecipe(data.hits);
        setCotegory(getCategory.data);
@@ -47,7 +47,7 @@ export const Home=()=>{
       }
         
         const getproduct=async()=>{
-          const getproduct=await axios.get(`http://localhost:8002/getall`);
+          const getproduct=await axios.get(`http://76ea209d3fcc.ngrok.io/getall`);
          
          // setRecipe(data.hits);
          setItems(getproduct.data);
@@ -58,14 +58,14 @@ export const Home=()=>{
 
 
 const getRecipe=async()=>{
-  const response=await axios.get(`http://localhost:8002/allrecipe`);
+  const response=await axios.get(`http://76ea209d3fcc.ngrok.io/allrecipe`);
  
  //console.log(response.data);
   setRecipe(response.data);
 }
 
 const getTopSelling=async()=>{
-  const gettop=await axios.get(`http://localhost:8002/getrating`);
+  const gettop=await axios.get(`http://76ea209d3fcc.ngrok.io/getrating`);
   setSelling(gettop.data);
 
 }
@@ -75,10 +75,10 @@ const getTopSelling=async()=>{
         
             //console.log(searchs);
         //setMessage("submit Successfully ");
-        history.push("/search");
+        history.push({pathname:'/search',name:searched});
         }
         const linkSearch=(name)=>{
-            setSearchs(name);
+            setSearched(name);
             history.push("/search");
         }
 
@@ -115,7 +115,7 @@ const getTopSelling=async()=>{
                             <div class="scaned" style={{position:"absolute",top:"35.87876px",right:"28.5px"}}></div>
                            
                              <i className="fa fa-search" style={{fontSize:"15px",position:"absolute",top:"28px",left:"70px",width:"15px",height:"15px",color:"#A8A8A8"}}></i>
-                           <input type="text" style={{borderRadius:"25px",backgroundColor:"#F3F3F3",width:"300px", height:"38.19px",border:"#F3F3F3",paddingTop:"10px"}} className="form-control my-3"  onChange={(e)=>setSearchs(e.target.value)} id="titless" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search"></input>
+                           <input type="text" style={{borderRadius:"25px",backgroundColor:"#F3F3F3",width:"300px", height:"38.19px",border:"#F3F3F3",paddingTop:"10px"}} className="form-control my-3"  onChange={(e)=>setSearched(e.target.value)} id="titless" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search"></input>
    
   
  </form><br></br><br></br><br></br><br></br><br></br>
@@ -131,25 +131,20 @@ const getTopSelling=async()=>{
     <div class="carousel-item active">
       <img src="https://image.freepik.com/free-vector/garden-care-gardening-people-fruits-trees-summer-harvesting-cartoon-illusrtration-gardeners-collecting-fruits_109709-756.jpg" id="slideimg" style={{width:"348px"}}  alt="..."/>
      
-      <div className="back1" style={{position:"absolute",marginLeft:"2px",top:"15px"}}>Freshfood from Foam</div>
-        <div className="back2" style={{position:"absolute",marginLeft:"2px",top:"57px"}}>pick your food!</div>
-        <button className="btn-carousels"><div className="back3">Shopping Now</div></button>
+      <div className="back1" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"15px"}}>Freshfood from Foam</div>
+        <div className="back2" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"57px"}}>pick your food!</div>
+        <button className="btn-carousels"><div className="back3" style={{fontFamily:"San Francisco"}}>Shopping Now</div></button>
    
      
     </div>
     <div class="carousel-item">
       <img src="https://d2skuhm0vrry40.cloudfront.net/2020/articles/2020-03-23-18-00/animal-crossing-fruit-how-long-grow-back-eating-fruit-tree-7018-1584986409499.jpg/EG11/resize/1200x-1/animal-crossing-fruit-how-long-grow-back-eating-fruit-tree-7018-1584986409499.jpg" id="slideimg" style={{width:"348px"}} alt="..."/>
       
-        <div className="back1" style={{position:"absolute",marginLeft:"2px",top:"15px"}}>Freshfood from Foam</div>
-        <div className="back2" style={{position:"absolute",marginLeft:"2px",top:"57px"}}>pick your food!</div>
-        <button className="btn-carousels"><div className="back3">Shopping Now</div></button>
+        <div className="back1" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"15px"}}>Freshfood from Foam</div>
+        <div className="back2" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"57px"}}>pick your food!</div>
+        <button className="btn-carousels"><div className="back3" style={{fontFamily:"San Francisco"}}>Shopping Now</div></button>
     </div>
-    <div class="carousel-item">
-      <img src="https://3.bp.blogspot.com/-NkrrvJW2DuQ/UrRR7fyRquI/AAAAAAAA5i8/iuAxJQXZzC8/s1600/Cartoon+garden+wallpapers+(1).png" id="slideimg" style={{width:"348px"}}  alt="..."/>
-      <div class="carousel-caption d-none d-md-block">
-        <h5 className="back">Be happy Eat Healthy</h5>
-        </div>
-    </div>
+   
   </div>
   
 </div>
@@ -174,7 +169,7 @@ const getTopSelling=async()=>{
     
     style={{ width: "158px",height:"184px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"89px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-   cover={<img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px"}}/>}
+   cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px"}}/>}
   >
     <h1 style={{marginLeft:"-10px",fontSize:"14px",lineHeight:"28px",fontWeight:"600",fontFamily:"San Francisco"}} >{item.name}</h1>
     <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"140px"}}>
@@ -209,7 +204,7 @@ const getTopSelling=async()=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
@@ -247,7 +242,7 @@ const getTopSelling=async()=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://localhost:8002/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
