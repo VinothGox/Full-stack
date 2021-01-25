@@ -133,7 +133,7 @@ exports.findAllItem = async(req, res) => {
   //add card
   exports.addcard=async(req,res)=>{
      
-  try{
+ 
       const getBody=req.body;
 
       const getTitle=getBody.title;
@@ -143,16 +143,15 @@ exports.findAllItem = async(req, res) => {
       console.log(getCardsId)
     
       const getCardUser=await Card.findOne({ where: {cards_id:getCardsId,title: getTitle} });
-     //console.log(getCardUser.title);
-     let finalAmount=0;
-    if(getCardUser){
-      var a=parseFloat(getCardUser.price);
-      var b=parseFloat(getPrice);
-       finalAmount=a+b;
-       finalAmount=finalAmount.toFixed(3);
-       const finalAns=finalAmount.toString();
-       var changeQuantity=getCardUser.quantity+1;
-       //console.log(finalAns);
+      let finalAmount=0;
+      if(getCardUser){
+        var a=parseFloat(getCardUser.price);
+        var b=parseFloat(getPrice);
+         finalAmount=a+b;
+         finalAmount=finalAmount.toFixed(3);
+         const finalAns=finalAmount.toString();
+         var changeQuantity=getCardUser.quantity+1;
+
        
     const updatePrice=await Card.update({price:finalAns,quantity:changeQuantity},{where: {cards_id:getCardsId,title: getTitle}});
       // console.log(updatePrice);
@@ -161,21 +160,32 @@ exports.findAllItem = async(req, res) => {
     else{
         req.body.item_id=req.params.id;  
      const datas=await Card.create(req.body);
-        res.json(datas);
+        res.json("success");
       }
 
 
 
-    }
-       //   req.body.item_id=req.params.id;  
-    // const datas=await Card.create(req.body);
-    //    res.json(datas);
-    catch(err){
-      res.status(401).json(err);
-    }
-
-
+    
+    
   }
+
+ //update price and quantity
+ exports.updateQuantity=async(req,res)=>{
+     try{
+      const getReqBody=req.body;
+      const getPricess=getReqBody.price;
+      const getQuantitys=getReqBody.quantity;
+      const getCarded_Id=getReqBody.cards_id;
+      const getTitless=getReqBody.title;
+      const updateAmount=await Card.update({price:getPricess,quantity:getQuantitys},{where: {cards_id:getCarded_Id,title: getTitless}});
+       res.json(updateAmount);
+     
+     }
+     catch(err){
+       res.json(err);
+     }
+
+ } 
 
   //rating base retrive data
   exports.ratings=async(req,res)=>{
@@ -201,18 +211,22 @@ exports.findAllItem = async(req, res) => {
     }
   }
 
-  //get one card
-  exports.getone=async(req,res)=>{
-      try{
-        const id = req.params.id;
-     const onedatas=await  Card.findByPk(id);
-     res.json(onedatas);
-    }
-    catch(err){
-      res.status(500).json({error:err});
+   //get one card
+   exports.getone=async(req,res)=>{
+   
+    try{
+      const id = req.params.id;
+    
+   const onedatas=await  Card.findByPk(id);
+   res.json(onedatas);
 
-    }
+
   }
+  catch(err){
+    res.json(err);
+  }
+}
+  
 
   //delete card
   exports.deletecard=async(req,res)=>{

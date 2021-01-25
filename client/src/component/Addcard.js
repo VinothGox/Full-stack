@@ -5,7 +5,7 @@ import "./addcard.css";
 import {Row,Col} from "antd";
 import { Card ,Space} from 'antd';
 import {Button} from "antd";
-import {RightOutlined,ShoppingCartOutlined,DeleteOutlined} from "@ant-design/icons";
+import {RightOutlined,ShoppingOutlined,DeleteOutlined} from "@ant-design/icons";
 
 export const AddCard=()=>{
     const [finals,setFinals]=useState([]);
@@ -17,7 +17,7 @@ export const AddCard=()=>{
         }, []);
         
         const getcards=async()=>{
-          const response=await axios.get(`http://76ea209d3fcc.ngrok.io/allcard`);
+          const response=await axios.get(`http://localhost:8004/allcard`);
          
          
          setFinals(response.data);
@@ -26,7 +26,7 @@ export const AddCard=()=>{
         }
         const deleteCards=async(card_id)=>{
          try{
-            const ans=await axios.delete(`http://76ea209d3fcc.ngrok.io/deletecard/${card_id}`);
+            const ans=await axios.delete(`http://localhost:8004/deletecard/${card_id}`);
             console.log("successfully delete it!");
            history.push("/");
             
@@ -37,6 +37,7 @@ export const AddCard=()=>{
 
         }
         const goBuy=(card_id,price)=>{
+          console.log(card_id)
             history.push({pathname:'/buycard',id:card_id,Price:price});
 
         }
@@ -75,7 +76,7 @@ export const AddCard=()=>{
     style={{ width:"232px",height:"220px",borderRadius:"12px",border:"#f3f3f3;",backgroundColor:"#f3f3f3"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
     cover={
-      <div className="d-flex justify-content-center"><img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
+      <div className="d-flex justify-content-center"><img alt="example" src={`http://localhost:8004/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
@@ -101,7 +102,7 @@ export const AddCard=()=>{
     <div style={{paddingRight:"10px",position:"absolute",left:"84%",height:"32px",width:"32px",top:"180px"}}>
    
      <Col className="gutter-row" span={6}>
-     <Button  type="primary" onClick={()=>goBuy(item.card_id,item.price)} style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+     <Button  type="primary" onClick={()=>goBuy(item.card_id,item.price)} style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingOutlined />} ></Button>
       </Col>
       </div>
     </Row>

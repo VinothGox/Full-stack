@@ -24,7 +24,7 @@ export const Product=()=>{
       const [categoryItems, SetcategoryItems] = useState([]);
 
       useEffect(() => {
-        axios.get('http://76ea209d3fcc.ngrok.io/allcategory').then(res => {
+        axios.get('http://localhost:8004/allcategory').then(res => {
             SetcategoryItems(res.data);
         })
       }, []);
@@ -55,7 +55,7 @@ export const Product=()=>{
    ProductData.append('bad', data1.bad);
    ProductData.append('category_id', data1.category_id);
 
-   const ans=await axios.post("http://76ea209d3fcc.ngrok.io/add",ProductData);
+   const ans=await axios.post("http://localhost:8004/add",ProductData);
        
     //console.log(ans);
     message.success("Successfully Saved!!!")

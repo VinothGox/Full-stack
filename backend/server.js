@@ -27,6 +27,6 @@ db.sequelize.sync({ force: false }).then(() => {
 
 
 //port setup    
-app.listen(8003,()=>{
+app.listen(8004,()=>{
     console.log("Server Started")
 })

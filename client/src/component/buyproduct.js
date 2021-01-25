@@ -24,17 +24,17 @@ export const BuyProduct=(props)=>{
 
     const buyCard=async()=>{
         try{
-            const main=await Axios.get(`http://76ea209d3fcc.ngrok.io/${props.location.id}`);
+            const main=await Axios.get(`http://localhost:8004/getonecard/${props.location.id}`);
             setBuys(main.data);
             setCount(main.data.quantity);
-            //console.log(main.data);
+            console.log(main.data);
         }
         catch(err){
             console.log(err);
         }
 
     }
-    const plus=()=>{
+    const plus=async()=>{
         const sum=count+1;
       const  pricetot = parseFloat(money);
       const  pricetots = parseFloat(discount)
@@ -44,7 +44,7 @@ export const BuyProduct=(props)=>{
         setMoney(amounts);
 
     }
-    const mini=()=>{
+    const mini=async()=>{
         const sum=count-1;
         const  pricetot = parseFloat(money);
         const  pricetots = parseFloat(discount);
@@ -70,7 +70,7 @@ export const BuyProduct=(props)=>{
             <div className="d-flex justify-content-center">
         
         <div className="detailed">
-            <img src={`http://76ea209d3fcc.ngrok.io/${buys.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
+            <img src={`http://localhost:8004/${buys.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
            
                <div className="card-bodys"><br></br>
                                    <div className="puttitle" style={{marginLeft:"10px",fontFamily:"San Francisco"}}>{buys.title}</div>
@@ -99,8 +99,8 @@ export const BuyProduct=(props)=>{
                   
                     <br></br>
                     <div style={{paddingLeft:"10px"}}>
-                    <button onClick={plus} className="btn-danger">+</button>&nbsp;{count}&nbsp;
-<button onClick={mini} className="btn-danger">-</button><br></br><br></br>
+                    <button onClick={()=>plus(buys.title,buys.cards_id)} className="btn-danger">+</button>&nbsp;{count}&nbsp;
+<button onClick={()=>mini(buys.title,buys.cards_id)} className="btn-danger">-</button><br></br><br></br>
 <h6 className="page"><b>Total Ammount:&nbsp;</b>$ {money}d</h6>
 </div>
 <div className="d-flex justify-content-center">

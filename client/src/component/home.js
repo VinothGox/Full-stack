@@ -1,12 +1,12 @@
 import React,{useEffect,useContext, useState} from "react";
-import {useHistory} from "react-router-dom";
+import {useHistory,Link} from "react-router-dom";
 import axios from "axios";
 import {productcontext} from "../ContextApi/contextapi";
 import "./home.css";
 
 import 'antd/dist/antd.css';
 import { Card } from 'antd';
-import {Button} from "antd";
+import {Button,message} from "antd";
 import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
 
 import {Typography } from 'antd';
@@ -22,10 +22,12 @@ export const Home=()=>{
     const [items,setItems]=useState([]);
     const [selling,setSelling]=useState([]);
     const [category,setCotegory]=useState([]);
+    const [resulted,setResulted]=useState([]);
     const [details,setDetails]=main.detail;
     const [searched,setSearched]=useState();
     const [cook,setCook]=main.cook;
-   
+    const [demos,setDemos]=useState(2);
+    const [quantityss,setQuantityss]=useState(1);
 
     const history=useHistory();
 
@@ -35,10 +37,11 @@ export const Home=()=>{
       getTopSelling();
       getCategory();
       
+      
       }, []);
       
       const getCategory=async()=>{
-        const getCategory=await axios.get(`http://76ea209d3fcc.ngrok.io/allcategory`);
+        const getCategory=await axios.get(`http://localhost:8004/allcategory`);
        
        // setRecipe(data.hits);
        setCotegory(getCategory.data);
@@ -47,7 +50,7 @@ export const Home=()=>{
       }
         
         const getproduct=async()=>{
-          const getproduct=await axios.get(`http://76ea209d3fcc.ngrok.io/getall`);
+          const getproduct=await axios.get(`http://localhost:8004/getall`);
          
          // setRecipe(data.hits);
          setItems(getproduct.data);
@@ -58,14 +61,14 @@ export const Home=()=>{
 
 
 const getRecipe=async()=>{
-  const response=await axios.get(`http://76ea209d3fcc.ngrok.io/allrecipe`);
+  const response=await axios.get(`http://localhost:8004/allrecipe`);
  
  //console.log(response.data);
   setRecipe(response.data);
 }
 
 const getTopSelling=async()=>{
-  const gettop=await axios.get(`http://76ea209d3fcc.ngrok.io/getrating`);
+  const gettop=await axios.get(`http://localhost:8004/getrating`);
   setSelling(gettop.data);
 
 }
@@ -98,6 +101,48 @@ const getTopSelling=async()=>{
        }
       const {Title} =Typography;
     
+      const getDatas=async(item_id)=>{
+
+        try{
+        const ans=await axios.get(`http://localhost:8004/get/${item_id}`);
+        //setResulted(ans.data.data);
+       
+        const produs={
+          title:ans.data.data.title,
+          description:ans.data.data.description,
+          price:ans.data.data.price,
+          images:ans.data.data.images,
+          weight:ans.data.data.weight,
+          rating:ans.data.data.rating,
+          good:ans.data.data.good,
+          bad:ans.data.data.bad,
+          quantity:quantityss,
+          cards_id:demos
+        }
+        console.log(produs);
+        const ans1=await axios.post(`http://localhost:8004/addcard/${item_id}`,produs);
+       
+       
+        if(ans1.data.message==="already add the card"){
+        message.success("add the cart!!!")
+        history.push("/addcard");
+        }
+        else{
+          message.success("Sucessfully add the cart")
+        }
+        history.push("/addcard")
+        
+      }
+      catch(err){
+        console.log(err);
+
+      }
+    }
+
+      
+       
+ 
+       
 
     return(
       <div>
@@ -169,7 +214,7 @@ const getTopSelling=async()=>{
     
     style={{ width: "158px",height:"184px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"89px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-   cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px"}}/>}
+   cover={<img alt="example" src={`http://localhost:8004/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px"}}/>}
   >
     <h1 style={{marginLeft:"-10px",fontSize:"14px",lineHeight:"28px",fontWeight:"600",fontFamily:"San Francisco"}} >{item.name}</h1>
     <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"140px"}}>
@@ -204,16 +249,15 @@ const getTopSelling=async()=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://localhost:8004/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
-         <h1             
-     style={{marginLeft:"-14px",marginTop:"-10px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1>
+     <Link onClick={() => detail(item.item_id)}><h1 style={{marginLeft:"-14px",marginTop:"-10px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1></Link>
     <h2 style={{marginLeft:"-14px",position:"absolute",left:"23px",top:"192px",fontFamily:"San Francisco"}} id="changesprice" className="text-left">{item.price}d</h2>
     <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"180px"}}>
     
-     <Button onClick={() => detail(item.item_id)} type="primary" style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+     <Button onClick={()=>getDatas(item.item_id)} type="primary" style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
      </div>
   </Card>
              </div>
@@ -242,19 +286,18 @@ const getTopSelling=async()=>{
     
     style={{ width:"132px",height:"220px",borderRadius:"12px",border:"#f3f3f3;"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
-    cover={<img alt="example" src={`http://76ea209d3fcc.ngrok.io/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
+    cover={<img alt="example" src={`http://localhost:8004/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"132px"}}/>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
                        
-    <h1 
-     style={{marginLeft:"-14px",marginTop:"-13px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1>
+    <Link onClick={() => detail(item.item_id)}><h1 style={{marginLeft:"-14px",marginTop:"-13px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1></Link>
     <Title level={2} style={{fontSize:"12px",fontWeight:"600px",lineHeight:"18px",fontStyle:"normal",width:"53px",height:"14px"}}> <del style={{marginLeft:"-14px",position:"absolute",left:"23px",top:"170px",color:" #CACACA",fontFamily:"San Francisco"}}  className="text-left">24.000d</del></Title>
     
     <h2 style={{marginLeft:"-14px",position:"absolute",left:"23px",top:"192px",fontFamily:"San Francisco"}} id="changesprice" className="text-left">{item.price}d</h2>
 <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"180px"}}>
     
-     <Button onClick={() => detail(item.item_id)} type="primary" style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+     <Button onClick={()=>getDatas(item.item_id)} type="primary" style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
      </div>
   </Card>
              </div>
