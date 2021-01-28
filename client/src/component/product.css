@@ -27,9 +27,7 @@ ant-label{
     border-radius: 50%;
     width: 35px;
     margin-right:10px;
-    position: absolute;
-    top:23px;
-    left: 90%;
+   margin-top: -28px;
     
 }
 .ant-btn-primary {

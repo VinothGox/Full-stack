@@ -56,7 +56,7 @@ export const AddCard=()=>{
             <div style={{paddingLeft:"10px"}}>
   <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
   </div>
-  <img className="rounfed" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
+  <img className="rounfeding" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
 
             <div>
                    <h1 className="font-weight-normal mt-2 text-center">Your Cart</h1>
@@ -116,6 +116,7 @@ export const AddCard=()=>{
              </div>
    
     ))} 
+
              </div>
             </div><br></br><br></br><br/><br/><br/>
             </div>

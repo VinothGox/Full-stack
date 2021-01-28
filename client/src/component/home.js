@@ -5,7 +5,7 @@ import {productcontext} from "../ContextApi/contextapi";
 import "./home.css";
 
 import 'antd/dist/antd.css';
-import { Card } from 'antd';
+import { Card,Carousel } from 'antd';
 import {Button,message} from "antd";
 import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
 
@@ -139,7 +139,12 @@ const getTopSelling=async()=>{
       }
     }
 
-      
+    function onChange(a, b, c) {
+      console.log(a, b, c);
+    }
+    
+    
+    
        
  
        
@@ -163,37 +168,16 @@ const getTopSelling=async()=>{
                            <input type="text" style={{borderRadius:"25px",backgroundColor:"#F3F3F3",width:"300px", height:"38.19px",border:"#F3F3F3",paddingTop:"10px"}} className="form-control my-3"  onChange={(e)=>setSearched(e.target.value)} id="titless" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search"></input>
    
   
- </form><br></br><br></br><br></br><br></br><br></br>
-
- <div className="slide">
-<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators" style={{position:"absolute",left:"-150px",right:"0px"}}>
-    <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-    <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://image.freepik.com/free-vector/garden-care-gardening-people-fruits-trees-summer-harvesting-cartoon-illusrtration-gardeners-collecting-fruits_109709-756.jpg" id="slideimg" style={{width:"348px"}}  alt="..."/>
-     
-      <div className="back1" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"15px"}}>Freshfood from Foam</div>
-        <div className="back2" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"57px"}}>pick your food!</div>
-        <button className="btn-carousels"><div className="back3" style={{fontFamily:"San Francisco"}}>Shopping Now</div></button>
-   
-     
+ </form><br></br><br></br><br></br><br/><br/>
+ <Carousel autoplay>
+    <div>
+      <h3 className="contentStyle"><div style={{position:"absolute",fontFamily:"San Francisco",top:"-20px",left:"21.5%"}}>  Freshfood from Foam</div><Button style={{position:"absolute",top:"120px",marginRight:"-9px",left:"32%",backgroundColor:"#F6D798",borderRadius:"8px",color:"white"}}>Shopping Now</Button></h3>
     </div>
-    <div class="carousel-item">
-      <img src="https://d2skuhm0vrry40.cloudfront.net/2020/articles/2020-03-23-18-00/animal-crossing-fruit-how-long-grow-back-eating-fruit-tree-7018-1584986409499.jpg/EG11/resize/1200x-1/animal-crossing-fruit-how-long-grow-back-eating-fruit-tree-7018-1584986409499.jpg" id="slideimg" style={{width:"348px"}} alt="..."/>
-      
-        <div className="back1" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"15px"}}>Freshfood from Foam</div>
-        <div className="back2" style={{position:"absolute",marginLeft:"2px",fontFamily:"San Francisco",top:"57px"}}>pick your food!</div>
-        <button className="btn-carousels"><div className="back3" style={{fontFamily:"San Francisco"}}>Shopping Now</div></button>
-    </div>
-   
-  </div>
-  
-</div>
-</div><br></br><br></br>
+    <div>
+    <h3 className="contentStyle"><div style={{position:"absolute",fontFamily:"San Francisco",top:"-20px",left:"21.5%"}}>  Freshfood</div><Button style={{position:"absolute",top:"120px",marginRight:"-9px",left:"32%",backgroundColor:"#F6D798",borderRadius:"8px",color:"white"}}>Shopping Now</Button></h3>
+     </div>
+  </Carousel>
+<br></br>
 
 <h3 style={{marginLeft:"19px",position:"absolute",top:"372px",fontFamily:"San Francisco",fontSize:"17px"}} className="heades">Category</h3>
 <i className="fas fa-angle-right fa-lg" style={{fontSize:"18px",color:"black",position:"absolute",right:"6px",top:"372px"}} ></i>

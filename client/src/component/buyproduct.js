@@ -69,64 +69,66 @@ export const BuyProduct=(props)=>{
 
             <div className="d-flex justify-content-center">
         
-        <div className="detailed">
-            <img src={`http://localhost:8004/${buys.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
+            <div className="detailed">
+    <img src={`http://localhost:8004/${buys.images}`} className="card-img-top  rounded" style={{height:"350px"}} alt="..." />
+   
+       <div className="card-bodys"><br></br>
+                           <div className="puttitle" style={{marginLeft:"10px",fontFamily:"San Francisco"}}>{buys.title}</div>
+                          <button className="btn btn-heardd" style={{ fontSize:"10px",fontFamily:"San Francisco"}}> <FontAwesomeIcon icon={faHeart}  className="cooled"/></button>
+         
+                         <h6 className="badge badge-success" style={{ fontSize:"11px",marginLeft:"10px",marginTop:"30px"}}><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{buys.rating}</h6>
+         
+                       
+                         <Row gutter={0}>
+      <Col className="gutter-row" span={6}>
+      <div className="packeg" style={{marginTop:"20px",marginLeft:"6px",fontFamily:"San Francisco"}}>1 Package - {buys.weight}</div> 
+                         </Col>
+    </Row>
+   <del className="delchange" style={{fontFamily:"San Francisco",textAlign:"center",marginTop:"-20px",position:"absolute",right:"90px"}}>2.000d</del>&ensp;
+     <div className="pricechange" style={{fontFamily:"San Francisco",textAlign:"right",position:"absolute",right:"15px",marginTop:"-42px"}}>{buys.price}d</div><br></br>
+         
+                      
+   
+         <hr className="detailscode"></hr>
+        
+         <h4 className="h5chamge" style={{fontFamily:"San Francisco"}}>Description</h4>
+         <p className="demoss" style={{fontFamily:"San Francisco", marginRight:"5px"}}>{buys.description}</p>
+            <br></br>
            
-               <div className="card-bodys"><br></br>
-                                   <div className="puttitle" style={{marginLeft:"10px",fontFamily:"San Francisco"}}>{buys.title}</div>
-                                  <button className="btn btn-heardd" style={{ fontSize:"10px",fontFamily:"San Francisco"}}> <FontAwesomeIcon icon={faHeart}  className="cooled"/></button>
-                 
-                                 <h6 className="badge badge-success" style={{ fontSize:"11px",position:"absolute",top:"400px",marginLeft:"10px"}}><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{buys.rating}</h6>
-                 
-                               
-                                 <Row gutter={0}>
-              <Col className="gutter-row" span={6}>
-              <div className="packeg" style={{marginTop:"0px",marginLeft:"5px",fontFamily:"San Francisco",position:"absolute",top:"76px"}}>1 Package - {buys.weight}</div> 
-                                 </Col>
-             <Col className="gutter-row" span={6}>
-             <div style={{marginTop:"40px",fontSize:"20px",fontWeight:"600px",fontFamily:"San Francisco"}}><del className="delchange" style={{fontFamily:"San Francisco",position:"absolute",top:"76px",left:"146px"}}>2.000d</del>&ensp;
-             <div className="pricechange" style={{position:"absolute",fontFamily:"San Francisco",position:"absolute",top:"76px",left:"200px"}}>{buys.price}d</div></div><br></br>
-                 
-                               </Col>
-            </Row>
-                 <hr className="detailscode"></hr>
-                
-                     <h4 className="h5chamge" style={{fontFamily:"San Francisco"}}>Description</h4>
-                     <div className="demoss" style={{fontFamily:"San Francisco", marginRight:"7px"}}>{buys.description}</div>
-                    <br></br>
-          
-      
-                  
-                    <br></br>
-                    <div style={{paddingLeft:"10px"}}>
+           
+            <div style={{paddingLeft:"10px"}}>
                     <button onClick={()=>plus(buys.title,buys.cards_id)} className="btn-danger">+</button>&nbsp;{count}&nbsp;
 <button onClick={()=>mini(buys.title,buys.cards_id)} className="btn-danger">-</button><br></br><br></br>
 <h6 className="page"><b>Total Ammount:&nbsp;</b>$ {money}d</h6>
 </div>
-<div className="d-flex justify-content-center">
-             <button style={{width:"100%",marginLeft:"8px",borderRadius:"8px",backgroundColor:"#3DAB85",fontFamily:"San Francisco"}} className="btn btn-successeddsd">
-             <div className="container p-1">
+      
+      
+    
+            <div className="d-flex justify-content-center">
+             <button   style={{width:"100%",marginLeft:"5px",borderRadius:"8px",backgroundColor:"#3DAB85",fontFamily:"San Francisco",marginRight:"5px"}} className="btn btn-successeddsd">
+             
                 <div className="row">
                     <div className="col">
-                        <div className="navitem">
-                           
-                        <div className="buttonadds" style={{fontFamily:"San Francisco"}}>Buy Now</div>
-                        <div className="buttonadd" style={{fontFamily:"San Francisco"}}>{money}d</div>
+                       
+                          
+                        <div className="buttonadds" style={{fontFamily:"San Francisco",marginLeft:"5px"}}>Add to Card</div>
+                        <div className="buttonadd" style={{fontFamily:"San Francisco",marginTop:"-20px"}}>{buys.price}d</div>
          </div>
-                    </div>
-                </div>
+                  
             </div>
              </button>
        
-             </div><br></br><br></br>
-                 
-                     </div>
-            
-              </div>
-              
+             </div>
+ 
+          
+         
+             </div>
+    
+      </div>
+      
            </div> 
             
-            <br></br><br></br>
+            <br></br><br></br><br></br><br></br><br/>
         </div>
     )
 

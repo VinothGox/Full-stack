@@ -125,97 +125,97 @@ const getRecipe=async()=>{
       history.push("/");
     }
   
-
     return(
 
         <div>
           <div><br></br>
- <div style={{paddingLeft:"10px"}}>
+
+          <div style={{paddingLeft:"10px"}}>
   <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
   </div>
                       <button className=" btn btn-cools" style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",left:"87%",top:"8px"}}><FontAwesomeIcon icon={faCartPlus} style={{ fontSize:"13px",marginLeft:"-4px"}} /></button><br></br><br></br>
         
-                         
+    
+ 
        
       
       <div className="d-flex justify-content-center">
         
 <div className="detailed">
-    <img src={`http://localhost:8004/${results.images}`} className="card-img-top  rounded" alt="..." width="100px"/>
+    <img src={`http://localhost:8004/${results.images}`} className="card-img-top  rounded" style={{height:"350px"}} alt="..." />
    
        <div className="card-bodys"><br></br>
                            <div className="puttitle" style={{marginLeft:"10px",fontFamily:"San Francisco"}}>{results.title}</div>
                           <button className="btn btn-heardd" style={{ fontSize:"10px",fontFamily:"San Francisco"}}> <FontAwesomeIcon icon={faHeart}  className="cooled"/></button>
          
-                         <h6 className="badge badge-success" style={{ fontSize:"11px",position:"absolute",top:"400px",marginLeft:"10px"}}><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{results.rating}</h6>
+                         <h6 className="badge badge-success" style={{ fontSize:"11px",marginLeft:"10px",marginTop:"30px"}}><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{results.rating}</h6>
          
                        
                          <Row gutter={0}>
       <Col className="gutter-row" span={6}>
-      <div className="packeg" style={{marginTop:"0px",marginLeft:"5px",fontFamily:"San Francisco",position:"absolute",top:"76px"}}>1 Package - {results.weight}</div> 
+      <div className="packeg" style={{marginTop:"20px",marginLeft:"6px",fontFamily:"San Francisco"}}>1 Package - {results.weight}</div> 
                          </Col>
-     <Col className="gutter-row" span={6}>
-     <div style={{marginTop:"40px",fontSize:"20px",fontWeight:"600px",fontFamily:"San Francisco"}}><del className="delchange" style={{fontFamily:"San Francisco",position:"absolute",top:"76px",left:"146px"}}>2.000d</del>&ensp;
-     <div className="pricechange" style={{position:"absolute",fontFamily:"San Francisco",position:"absolute",top:"76px",left:"200px"}}>{results.price}d</div></div><br></br>
-         
-                       </Col>
     </Row>
+   <del className="delchange" style={{fontFamily:"San Francisco",textAlign:"center",marginTop:"-20px",position:"absolute",right:"90px"}}>2.000d</del>&ensp;
+     <div className="pricechange" style={{fontFamily:"San Francisco",textAlign:"right",position:"absolute",right:"15px",marginTop:"-42px"}}>{results.price}d</div><br></br>
+         
+                      
+   
          <hr className="detailscode"></hr>
         
-             <h4 className="h5chamge" style={{fontFamily:"San Francisco"}}>Description</h4>
-             <div className="demoss" style={{fontFamily:"San Francisco", marginRight:"7px"}}>{results.description}</div>
+         <h4 className="h5chamge" style={{fontFamily:"San Francisco"}}>Description</h4>
+         <p className="demoss" style={{fontFamily:"San Francisco", marginRight:"5px"}}>{results.description}</p>
             <br></br>
-            <Row gutter={0}>
-      <Col className="gutter-row" span={6}>
+           
+           
       <h4 className="h5chamge" style={{fontFamily:"San Francisco"}}>Nutritions </h4>&nbsp;
-      </Col>
-     <Col className="gutter-row" span={6}>
-      <div className="nutweight" style={{fontFamily:"San Francisco"}}>{results.weight}</div>   
-      </Col>
-    </Row>
-    <table style={{padding:"10px"}}>
-  <tr style={{width:"348px",display:"block"}}>
-  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",height:"18px",width:"221px"}}>Clories (kcal)</td>
-  <td style={{left:"76%",fontSize:"15px",fontFamily:"San Francisco",top:"690px",position:"absolute",lineHeight:"20px"}}>120-150</td>
+      
+      <div className="nutweight" style={{fontFamily:"San Francisco",marginTop:"-49px",marginLeft:"95px"}}>{results.weight}</div>   <br/>
+     
+    <table id="customers">
+  <tr style={{marginRight:"10px"}}>
+  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco"}}>Clories (kcal)</td>
+  <td style={{fontSize:"15px",fontFamily:"San Francisco",lineHeight:"20px",textAlign:"right",position:"absolute",left:"80%"}}>120-150</td>
  
   </tr>
-  <tr style={{width:"348px",display:"block"}}>
-  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",height:"18px",width:"221px"}}>Protein (g)</td>
-  <td style={{left:"83%",fontSize:"15px",position:"absolute",top:"725px",fontFamily:"San Francisco",lineHeight:"20px"}}>1.1</td>
+  <tr style={{marginRight:"10px"}}>
+  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco"}}>Protein (g)</td>
+  <td style={{fontSize:"15px",fontFamily:"San Francisco",lineHeight:"20px",position:"absolute",left:"80%"}}>1.1</td>
  
   </tr>
-  <tr style={{width:"348px",display:"block"}}>
-  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",height:"18px",width:"221px"}}>Vitamin K (ug)</td>
-  <td style={{left:"83%",fontSize:"15px",position:"absolute",top:"760px",fontFamily:"San Francisco",lineHeight:"20px"}}>0.5</td>
+  <tr>
+  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",}}>Vitamin K (ug)</td>
+  <td style={{fontSize:"15px",fontFamily:"San Francisco",lineHeight:"20px",position:"absolute",left:"80%"}}>0.5</td>
   
   </tr>
-  <tr style={{width:"348px",display:"block"}}>
-  <td  className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",height:"18px",width:"221px"}}>Fat (g)</td>
-  <td style={{left:"83%",fontSize:"15px",position:"absolute",top:"795px",lineHeight:"20px"}}>0.3</td>
+  <tr>
+  <td  className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco"}}>Fat (g)</td>
+  <td style={{fontSize:"15px",lineHeight:"20px",position:"absolute",left:"80%"}}>0.3</td>
   
   </tr>
-  <tr style={{width:"348px",display:"block"}}>
-  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",height:"18px",width:"221px"}}>Water (%)</td>
-  <td style={{left:"83%",fontSize:"15px",position:"absolute",top:"831px",fontFamily:"San Francisco",lineHeight:"20px"}}>75</td>
+  <tr>
+  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco"}}>Water (%)</td>
+  <td style={{fontSize:"15px",fontFamily:"San Francisco",lineHeight:"20px",position:"absolute",left:"80%"}}>75</td>
  
   </tr>
-  <tr style={{width:"348px",display:"block"}}>
-  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco",height:"18px",width:"221px"}}>Fiber (g)</td>
-  <td style={{left:"83%",fontSize:"15px",position:"absolute",top:"867px",fontFamily:"San Francisco",lineHeight:"20px"}}>3.2</td>
+  <tr>
+  <td className="tabl1" style={{textAlign:"left",fontFamily:"San Francisco"}}>Fiber (g)</td>
+  <td style={{fontSize:"15px",fontFamily:"San Francisco",lineHeight:"20px",position:"absolute",left:"80%"}}>3.2</td>
  
   </tr>
 </table> <br></br><br></br>
+
 <div className="d-flex justify-content-center">
               <div className="row">
                 <div style={{minWidth:"148px"}}>
-                <div className="sholudbe" style={{marginLeft:"-14px",fontFamily:"San Francisco"}}>should use</div>
+                <div className="sholudbe" style={{marginLeft:"-14px",fontFamily:"San Francisco"}}>should use <div className="bagdesd" style={{color:"white",fontSize:"11px",fontWeight:"600px",marginTop:"-20px",marginLeft:"90px"}}><div className="badgename" style={{fontFamily:"San Francisco",textAlign:"center",marginLeft:"2px"}}>Good</div></div>
+               </div>
                 
                 </div>
-                <div className="bagdesd" style={{position:"absolute",left:"29%",marginLeft:"4px",marginTop:"-3px",color:"white",fontSize:"11px",fontWeight:"600px"}}><div className="badgename" style={{fontFamily:"San Francisco"}}>Good</div></div>&ensp;
-                <div style={{minWidth:"148px"}}>
-                <div className="shouldnd" style={{marginLeft:"9px",fontFamily:"San Francisco"}}>shouldn't use</div></div>
-                <div className="redbagdesd" style={{position:"absolute",left:"83%",marginLeft:"0px",marginTop:"-3px",color:"white",fontSize:"11px",fontWeight:"600px"}}><div className="badgename" style={{fontFamily:"San Francisco"}}>Bad</div></div>&ensp;
-             
+                 <div style={{minWidth:"148px"}}>
+                <div className="shouldnd" style={{marginLeft:"9px",fontFamily:"San Francisco"}}>shouldn't use <div className="redbagdesd" style={{color:"white",fontSize:"11px",fontWeight:"600px",marginTop:"-20px",marginLeft:"110px"}}><div className="badgename" style={{fontFamily:"San Francisco"}}>Bad</div></div>
+             </div></div>
+                
               </div>
               </div>
             <div className="d-flex justify-content-center">
@@ -237,21 +237,21 @@ const getRecipe=async()=>{
              </div>
             <br></br>
             <div className="d-flex justify-content-center">
-             <button onClick={()=>AddCard(results.item_id)}  style={{width:"100%",marginLeft:"8px",borderRadius:"8px",backgroundColor:"#3DAB85",fontFamily:"San Francisco"}} className="btn btn-successeddsd">
-             <div className="container p-1">
+             <button onClick={()=>AddCard(results.item_id)}  style={{width:"100%",marginLeft:"5px",borderRadius:"8px",backgroundColor:"#3DAB85",fontFamily:"San Francisco",marginRight:"5px"}} className="btn btn-successeddsd">
+             
                 <div className="row">
                     <div className="col">
-                        <div className="navitem">
+                       
                           
-                        <div className="buttonadds" style={{fontFamily:"San Francisco"}}>Add to Card</div>
-                        <div className="buttonadd" style={{fontFamily:"San Francisco"}}>{results.price}d</div>
+                        <div className="buttonadds" style={{fontFamily:"San Francisco",marginLeft:"5px"}}>Add to Card</div>
+                        <div className="buttonadd" style={{fontFamily:"San Francisco",marginTop:"-20px"}}>{results.price}d</div>
          </div>
-                    </div>
-                </div>
+                  
             </div>
              </button>
        
              </div>
+ 
           
          
              </div>
@@ -260,8 +260,8 @@ const getRecipe=async()=>{
       
    </div>
       </div><br></br>
-      <h3 style={{marginLeft:"16px",position:"absolute",top:"1235px",left:"4px",fontFamily:"San Francisco"}} className="heades"><b>Buy With</b></h3>
-<i className="fas fa-angle-right fa-lg" style={{fontSize:"18px",color:"black",position:"absolute",right:"6px",top:"1235px"}} ></i>
+      <h3 style={{marginLeft:"16px",fontFamily:"San Francisco"}} className="heades"><b>Buy With</b> <i className="fas fa-angle-right fa-lg" style={{fontSize:"18px",color:"black",marginTop:"5px",position:"absolute",left:"95%"}} ></i></h3>
+
 
 <div>
 <div className="carddecks" style={{marginLeft:"-15px"}}> 
@@ -298,8 +298,8 @@ const getRecipe=async()=>{
     ))} 
     </div>
     </div><br></br>
-    <h3 style={{marginLeft:"16px",position:"absolute",top:"1520px",left:"4px",fontFamily:"San Francisco"}} className="heades"><b>Daily Recipe</b></h3>
-<i className="fas fa-angle-right fa-lg" style={{fontSize:"18px",color:"black",position:"absolute",right:"6px",top:"1520px"}} ></i>
+    <h3 style={{marginLeft:"16px",fontFamily:"San Francisco"}} className="heades"><b>Daily Recipe</b> <i className="fas fa-angle-right fa-lg" style={{fontSize:"18px",color:"black",position:"absolute",left:"95%"}} ></i></h3>
+
 
 <div>
 <div className="carddecks" style={{marginLeft:"-15px"}}> 

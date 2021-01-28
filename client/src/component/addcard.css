@@ -18,6 +18,14 @@
 
 
 }      
+.rounfeding{
+    float: right;
+clear: right;
+border-radius: 50%;
+width: 35px;
+margin-right: 10px;
+margin-top: -1px;
+}
 .card-img-topsss {
     width: 90%;
     height: 200px;

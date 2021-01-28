@@ -74,15 +74,15 @@ export const Product=()=>{
   </div>
   <img className="rounfed" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
 
-         
+  <div className="d-flex justify-content-center">
 <div className="thebox">
 
 <h3 className="headofproduct">Save Product</h3>
  
              
 <Form
-        labelCol={{ span: 2 }}
-        wrapperCol={{ span: 2 }}
+        labelCol={{ span: 24 }}
+        wrapperCol={{ span: 24 }}
         layout="horizontal"
         initialValues={{ size: componentSize }}
        
@@ -209,7 +209,8 @@ export const Product=()=>{
         </Button>
       </Form.Item>
       </div>
-        </Form>
+        </Form><br/><br/><br/>
+        </div>
         </div>
         </div>
         </div>

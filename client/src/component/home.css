@@ -140,9 +140,7 @@ h6{
      border-radius: 50%;
      width: 30px;
      margin-right:10px;
-     position: absolute;
-     top:30px;
-     left: 90%;
+     margin-top: -50px;
      
  }
  .texts{
@@ -378,4 +376,17 @@ color: #A9643D;
 }
 .flexcard{
     display: flex;
+}
+.contentStyle {
+    height: 160px;
+    line-height:160px;
+    text-align: center;
+  color: #FFFFFF;
+   
+    margin-left:14px;
+    margin-right:14px;
+    border-radius:14px;
+     background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);;
+    background-repeat: no-repeat;
+    
 }

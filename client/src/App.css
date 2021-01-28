@@ -8,7 +8,7 @@
 
   display: flex;
    justify-content: space-between;
-   width: 400px; 
+   width: 100%; 
    bottom: 0;
    flex-wrap: wrap;
 }
@@ -31,7 +31,7 @@
 .tab p{
   font-size: 14px;
   margin-left:10px ;
-  max-width: 200px;
+  max-width: 100%;
 }
 
 .mycontainer{
