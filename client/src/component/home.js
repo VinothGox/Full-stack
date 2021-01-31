@@ -1,11 +1,12 @@
 import React,{useEffect,useContext, useState} from "react";
 import {useHistory,Link} from "react-router-dom";
+import {GoogleLogout} from "react-google-login";
 import axios from "axios";
 import {productcontext} from "../ContextApi/contextapi";
 import "./home.css";
 
 import 'antd/dist/antd.css';
-import { Card,Carousel } from 'antd';
+import { Card,Carousel,Dropdown,Menu } from 'antd';
 import {Button,message} from "antd";
 import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
 
@@ -18,6 +19,9 @@ import {Typography } from 'antd';
 export const Home=()=>{
    
     const main=useContext(productcontext);
+    const [login,setLogin]=main.loginuser;
+    const [username,setUsername]=main.name;
+    const [image,setImage]=main.image;
     const [recipess,setRecipe]=useState([]);
     const [items,setItems]=useState([]);
     const [selling,setSelling]=useState([]);
@@ -61,7 +65,7 @@ export const Home=()=>{
 
 
 const getRecipe=async()=>{
-  const response=await axios.get(`http://localhost:8004/allrecipe`);
+  const response=await axios.get(` http://localhost:8004/allrecipe`);
  
  //console.log(response.data);
   setRecipe(response.data);
@@ -104,7 +108,7 @@ const getTopSelling=async()=>{
       const getDatas=async(item_id)=>{
 
         try{
-        const ans=await axios.get(`http://localhost:8004/get/${item_id}`);
+        const ans=await axios.get(` http://localhost:8004/get/${item_id}`);
         //setResulted(ans.data.data);
        
         const produs={
@@ -125,12 +129,12 @@ const getTopSelling=async()=>{
        
         if(ans1.data.message==="already add the card"){
         message.success("add the cart!!!")
-        history.push("/addcard");
+       // history.push("/addcard");
         }
         else{
           message.success("Sucessfully add the cart")
         }
-        history.push("/addcard")
+      //  history.push("/addcard")
         
       }
       catch(err){
@@ -142,21 +146,41 @@ const getTopSelling=async()=>{
     function onChange(a, b, c) {
       console.log(a, b, c);
     }
-    
-    
-    
-       
- 
-       
+    const logout=(response)=>{
+      
+      history.push("/login");
+      setLogin(false);
+      setUsername();
+      setImage();
+    }
 
+    const menu = (
+      <Menu>
+        <Menu.Item>
+        <GoogleLogout
+      clientId="652934983320-3h56qsb4vrt273pumam71trk0bmtvdin.apps.googleusercontent.com"
+      onLogoutSuccess={logout}
+    >
+   
+          <a target="_blank" rel="noopener noreferrer">
+           logout
+          </a>
+          </GoogleLogout>
+        </Menu.Item>
+        </Menu>
+    );
     return(
       <div>
       <div><br></br>
+      {login?(
+        <div>
       <h1
-  style={{fontSize:"11px",fontFamily:"San Francisco",lineHeight:"13px",color:"#1A051D",paddingLeft:"14px"}}>MONDAY,24 OCTOBER
+  style={{fontSize:"11px",fontFamily:"San Francisco",lineHeight:"13px",color:"#1A051D",paddingLeft:"13px"}}>MONDAY,24 OCTOBER
 </h1>
-<h2 style={{fontSize:"22px",fontFamily:"San Francisco",lineHeight:"28px",fontWeight:"600",color:"#1A051D",paddingLeft:"14px"}}>Good Morning,Peter</h2>
-<img className="rounf" src="https://images.pexels.com/photos/4355346/pexels-photo-4355346.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""></img>
+<h2 style={{fontSize:"22px",fontFamily:"San Francisco",lineHeight:"28px",fontWeight:"600",color:"#1A051D",paddingLeft:"13px"}}>Good Morning, {username}</h2>
+<Dropdown overlay={menu}>
+<img className="rounf" src={image} alt=""></img>
+</Dropdown>
 <button className=" btn btn-cools" style={{paddingLeft:"10px",marginLeft:"14px",position:"absolute",top:"90px"}}><i className="fas fa-bars fa-lg" style={{fontSize:"14px",justifyItems:"center"}}></i></button>
 
                             <form onSubmit={onSubmit} style={{position:"absolute",top:"75px",paddingLeft:"59px"}} class="form-inline">
@@ -346,8 +370,17 @@ const getTopSelling=async()=>{
 
 
 
-
-
+</div>
+    ):(
+      <div>
+         <div className="d-flex justify-content-center">
+          <h1>please login!!!</h1><br></br>
+          </div>
+          <div className="d-flex justify-content-center">
+          <Link to="/login" className="text-center">login</Link>
+          </div>
+          </div>
+  )}   
 
               </div>
              

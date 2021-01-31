@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
 
-    const User = sequelize.define("user", {
+    const User = sequelize.define("User", {
 
       user_id:{
         type: Sequelize.INTEGER,
@@ -21,19 +21,10 @@ module.exports = (sequelize, Sequelize) => {
     primaryKey: true
     },
     
-    password: {
-    type: Sequelize.STRING,
-    allowNull:false
-    
-    },
-
-    role:{
-        type:Sequelize.STRING,
-        allowNull:false
-
-    },
-
-   
+    imageurl:{
+      type:Sequelize.STRING,
+      allowNull:false
+    }
 
     
     });

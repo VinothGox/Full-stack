@@ -9,6 +9,7 @@ const path=require("path");
 
 
 const addproduct=require("./route/routes");
+const regist=require("./controller/registerUser");
 app.use(express.static("uploads"));
 
 
@@ -16,6 +17,7 @@ app.use(express.static("uploads"));
 
 //route
 app.use("/",addproduct)
+app.use("/add",regist);
 
 
 //db

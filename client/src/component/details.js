@@ -1,6 +1,7 @@
 import React,{useContext,useEffect,useState} from "react"
+
+import {useHistory,Link} from "react-router-dom";
 import {productcontext} from "../ContextApi/contextapi";
-import {useHistory} from "react-router-dom";
 import axios from "axios";
 import "./details.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,9 +16,10 @@ import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
 
 export const Details=()=>{
 
-
+  const main=useContext(productcontext);
+    const [login,setLogin]=main.loginuser;
     const history=useHistory();
-    const main=useContext(productcontext);
+   
     const [details,setDetails]=main.detail;
     const [temp,setTemp]=useState([]);
     const [temps,setTemps]=useState([]);
@@ -111,7 +113,7 @@ const getRecipe=async()=>{
         console.log(ans1);
         if(ans1.data.message==="already add the card"){
         message.success("already add the cart!!!")
-        history.push("/addcard");
+       // history.push("/addcard");
         }
         else{
           message.success("Sucessfully add the cart")
@@ -128,7 +130,11 @@ const getRecipe=async()=>{
     return(
 
         <div>
+         
+           {login?(
+              <div>
           <div><br></br>
+         
 
           <div style={{paddingLeft:"10px"}}>
   <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
@@ -331,10 +337,17 @@ const getRecipe=async()=>{
 </div>
     ))} 
     </div>
+   
     </div>
      
      <br></br><br></br><br></br><br></br>
-    
+     </div>
+     ):(
+      <div>
+          <h1>please login!!!</h1>
+          <Link to="/login" className="text-center">login</Link>
+          </div>
+  )}   
   </div>
     
     )

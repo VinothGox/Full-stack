@@ -10,6 +10,7 @@ import {productcontext} from "./ContextApi/contextapi";
 import {AddCard} from "./component/Addcard";
 import {BuyProduct} from "./component/buyproduct";
 import Bottombar from "./bar";
+import {Login} from "./component/login";
 function App() {
   
   const main=useContext(productcontext);
@@ -31,6 +32,7 @@ function App() {
        <Route exact path="/details" component={Details}/>
        <Route exact path="/addcard" component={AddCard}/>
        <Route exact path="/buycard" component={BuyProduct}/>
+       <Route exact path="/login" component={Login}/>
       
        
        

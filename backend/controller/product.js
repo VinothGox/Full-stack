@@ -5,7 +5,7 @@ const Category=db.categorys;
 const Card=db.cards;
 const Recipe=db.Recipes;
 const Carded=db.maincards;
-//const user=db.users;
+const User=db.user;
 const Op = db.Sequelize.Op;
 
 
@@ -163,11 +163,28 @@ exports.findAllItem = async(req, res) => {
         res.json("success");
       }
 
-
-
-    
-    
+    }  
+  //user Create the card
+exports.userCart=async(req,res)=>{
+  try{
+      const carted={
+        email:req.body.email,
+      }
+     const getEmail=await Carded.findOne({ where: {email:carted.email} });
+     if(getEmail){
+       res.json("already get");
+     }
+     else{
+      const final=await Carded.create(carted);
+      res.json(final);
+ 
+     }
+ 
+       }
+  catch(err){
+    res.json(err);
   }
+}
 
  //update price and quantity
  exports.updateQuantity=async(req,res)=>{

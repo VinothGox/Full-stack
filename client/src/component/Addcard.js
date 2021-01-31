@@ -1,13 +1,16 @@
-import React, { useState,useEffect } from "react";
-import {useHistory}  from "react-router-dom";
+import React, { useState,useEffect,useContext } from "react";
+import {useHistory,Link}  from "react-router-dom";
 import axios from "axios";
 import "./addcard.css";
 import {Row,Col} from "antd";
 import { Card ,Space} from 'antd';
 import {Button} from "antd";
+import {productcontext} from "../ContextApi/contextapi";
 import {RightOutlined,ShoppingOutlined,DeleteOutlined} from "@ant-design/icons";
 
 export const AddCard=()=>{
+  const main=useContext(productcontext);
+  const [login,setLogin]=main.loginuser;
     const [finals,setFinals]=useState([]);
     const history=useHistory();
    
@@ -17,7 +20,7 @@ export const AddCard=()=>{
         }, []);
         
         const getcards=async()=>{
-          const response=await axios.get(`http://localhost:8004/allcard`);
+          const response=await axios.get(` http://localhost:8004/allcard`);
          
          
          setFinals(response.data);
@@ -53,6 +56,8 @@ export const AddCard=()=>{
             
           
             <div><br></br>
+            {login?(
+              <div>
             <div style={{paddingLeft:"10px"}}>
   <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
   </div>
@@ -76,7 +81,7 @@ export const AddCard=()=>{
     style={{ width:"232px",height:"220px",borderRadius:"12px",border:"#f3f3f3;",backgroundColor:"#f3f3f3"}}
     bodyStyle={{backgroundColor:"#f3f3f3",border:"0px",height:"112px",width:"132px",borderBottomLeftRadius:"12px",borderBottomRightRadius:"12px"}}
     cover={
-      <div className="d-flex justify-content-center"><img alt="example" src={`http://localhost:8004/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
+      <div className="d-flex justify-content-center"><img alt="example" src={` http://localhost:8004/${item.images}`} style={{borderTopRightRadius:"12px",borderTopLeftRadius:"12px",height:"108px",width:"232px"}}/></div>}
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
@@ -118,6 +123,17 @@ export const AddCard=()=>{
     ))} 
 
              </div>
+             </div>
+              ):(
+                <div>
+                   <div className="d-flex justify-content-center">
+                    <h1>please login!!!</h1>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                    <Link to="/login" className="text-center">login</Link>
+                    </div>
+                    </div>
+            )}   
             </div><br></br><br></br><br/><br/><br/>
             </div>
          

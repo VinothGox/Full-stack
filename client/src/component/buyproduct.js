@@ -1,16 +1,18 @@
 
 import Axios from "axios";
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect ,useContext} from "react";
 import {useHistory} from "react-router-dom";
 import "./buy.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHeart } from '@fortawesome/free-solid-svg-icons'
+import {productcontext} from "../ContextApi/contextapi";
 import {Row,Col} from "antd";
 
  
 export const BuyProduct=(props)=>{
     const history=useHistory();
-
+    const main=useContext(productcontext);
+    const [login,setLogin]=main.loginuser;
  const [buys,setBuys]=useState([]);
  const [count,setCount]=useState();
  const [money,setMoney]=useState(props.location.Price);
@@ -62,6 +64,9 @@ export const BuyProduct=(props)=>{
 
     return(
         <div><br></br>
+        <div>
+            {login?(
+                <div>
         <div style={{paddingLeft:"10px"}}>
   <button onClick={goToHome} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
   </div>
@@ -129,6 +134,14 @@ export const BuyProduct=(props)=>{
            </div> 
             
             <br></br><br></br><br></br><br></br><br/>
+            </div>
+             ):(
+                <div>
+                    <h1>please login!!!</h1>
+                    <Link to="/login" className="text-center">login</Link>
+                    </div>
+            )}   
+            </div>
         </div>
     )
 
