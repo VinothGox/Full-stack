@@ -172,7 +172,7 @@ exports.userCart=async(req,res)=>{
       }
      const getEmail=await Carded.findOne({ where: {email:carted.email} });
      if(getEmail){
-       res.json("already get");
+       res.json(getEmail);
      }
      else{
       const final=await Carded.create(carted);
@@ -244,6 +244,17 @@ exports.userCart=async(req,res)=>{
   }
 }
   
+//get card
+exports.getUserCard=async(req,res)=>{
+  try{
+    const id=req.params.id;
+    const getcards=await Card.findAll({where :{cards_id:id}});
+    res.json(getcards);
+  }
+  catch(err){
+    res.status(500).json({error:err});
+  }
+}
 
   //delete card
   exports.deletecard=async(req,res)=>{

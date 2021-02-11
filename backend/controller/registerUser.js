@@ -9,11 +9,12 @@ router.post("/saveuser",async(req,res)=>{
     try{
 
         const users=req.body;
+        console.log(users);
         const userEmail=users.email;
 
         const getEmails=await User.findOne({ where: {email:userEmail} });
         if(getEmails){
-            res.json("already get");
+            res.json("already get data");
         }
         else{
             const registered=await User.create(req.body);

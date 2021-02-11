@@ -1,18 +1,21 @@
 
 import Axios from "axios";
 import React, { useState,useEffect ,useContext} from "react";
-import {useHistory} from "react-router-dom";
+import {useHistory,Link} from "react-router-dom";
 import "./buy.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faHeart } from '@fortawesome/free-solid-svg-icons'
-import {productcontext} from "../ContextApi/contextapi";
+
 import {Row,Col} from "antd";
+import {UIstore} from "./stateStore";
 
  
 export const BuyProduct=(props)=>{
+    const islogin=UIstore.useState(s=>
+        s.login
+    );
     const history=useHistory();
-    const main=useContext(productcontext);
-    const [login,setLogin]=main.loginuser;
+  
  const [buys,setBuys]=useState([]);
  const [count,setCount]=useState();
  const [money,setMoney]=useState(props.location.Price);
@@ -65,7 +68,7 @@ export const BuyProduct=(props)=>{
     return(
         <div><br></br>
         <div>
-            {login?(
+            {islogin?(
                 <div>
         <div style={{paddingLeft:"10px"}}>
   <button onClick={goToHome} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>
@@ -116,8 +119,8 @@ export const BuyProduct=(props)=>{
                     <div className="col">
                        
                           
-                        <div className="buttonadds" style={{fontFamily:"San Francisco",marginLeft:"5px"}}>Add to Card</div>
-                        <div className="buttonadd" style={{fontFamily:"San Francisco",marginTop:"-20px"}}>{buys.price}d</div>
+                        <div className="buttonadds" style={{fontFamily:"San Francisco",marginLeft:"5px"}}>Buy Now</div>
+                        <div className="buttonadd" style={{fontFamily:"San Francisco",marginTop:"-20px"}}>{money}d</div>
          </div>
                   
             </div>

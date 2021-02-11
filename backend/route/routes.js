@@ -3,7 +3,7 @@ const router=express.Router();
 
 const upload=require("../middleware/upload");
 
-const {create,userCart,updateQuantity,ratings,allrecipes,getone,deletecard,cards,findcate,findAll,findOne,findAllItem,addcard} =require("../controller/product");
+const {create,getUserCard,userCart,updateQuantity,ratings,allrecipes,getone,deletecard,cards,findcate,findAll,findOne,findAllItem,addcard} =require("../controller/product");
 
 router.post("/add",upload.single('images'),create);
 
@@ -19,6 +19,7 @@ router.delete("/deletecard/:id",deletecard);
 router.get("/getonecard/:id",getone);
 router.get("/allrecipe",allrecipes);
 router.post("/updateamount",updateQuantity);
+router.get("/getallcard/:id",getUserCard);
 
 
 

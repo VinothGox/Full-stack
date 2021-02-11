@@ -2,20 +2,23 @@ import React,{useContext,useEffect, useState} from "react";
 import {productcontext} from "../ContextApi/contextapi";
 import axios from "axios";
 import "./search.css";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons'
 import { Card } from 'antd';
 import {Typography } from 'antd';
-import {Button} from "antd";
+import {Button,message} from "antd";
 import {ShoppingCartOutlined} from "@ant-design/icons";
+import {UIstore} from "./stateStore";
 export const Search=(props)=>{
 
-    const main=useContext(productcontext);
-
+  const detailed=UIstore.useState(s=>s.detail);
+  const id=UIstore.useState(s=>s.cardId);
+   
   const history=useHistory();
    
-    const [details,setDetails]=main.detail;
+  const [demos,setDemos]=useState(2);
+  const [quantityss,setQuantityss]=useState(1);
     const [result,setResult]=useState([]);
     const [sellings,setSellings]=useState([]);
     const [serachitem,setSearchitem]=useState(props.location.name);
@@ -47,10 +50,51 @@ export const Search=(props)=>{
             history.push("/");
         }
         const detail=(item_id)=>{
-    setDetails(item_id);
+          UIstore.update(s=>{
+            s.detail=item_id
+          });
+    //setDetails(item_id);
     history.push("/details");
 
         }
+
+       const getdestail=async(item_id)=>{
+        try{
+          const ans=await axios.get(` http://localhost:8004/get/${item_id}`);
+          //setResulted(ans.data.data);
+         
+          const produs={
+            title:ans.data.data.title,
+            description:ans.data.data.description,
+            price:ans.data.data.price,
+            images:ans.data.data.images,
+            weight:ans.data.data.weight,
+            rating:ans.data.data.rating,
+            good:ans.data.data.good,
+            bad:ans.data.data.bad,
+            quantity:quantityss,
+            cards_id:id
+          }
+          console.log(produs);
+          const ans1=await axios.post(`http://localhost:8004/addcard/${item_id}`,produs);
+         
+         
+          if(ans1.data.message==="already add the card"){
+          message.success("add the cart!!!")
+         // history.push("/addcard");
+          }
+          else{
+            message.success("Sucessfully add the cart")
+          }
+        //  history.push("/addcard")
+          
+        }
+        catch(err){
+          console.log(err);
+  
+        }
+
+       }
 
 
     return(
@@ -89,12 +133,11 @@ export const Search=(props)=>{
   >
    <text style={{marginLeft:"-14px",fontSize:"11px",lineHeight:"18px" ,marginTop:"-14px",fontFamily:"San Francisco"}} className="texts">{item.weight}r</text>
                         <h6 style={{marginRight:"-14px",marginTop:"-14px",fontSize:"11px",position:"absolute",right:"20px"}} className="badge badge-success"><i className="fas fa-star fa-sm" style={{ fontSize:"11px"}}></i>{item.rating}</h6><br></br>
-         <h1             
-     style={{marginLeft:"-14px",marginTop:"-10px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1>
+         <Link onClick={() => detail(item.item_id)}><h1 style={{marginLeft:"-14px",marginTop:"-10px",fontFamily:"San Francisco",fontSize:"14px",lineHeight:"28px",fontWeight:"600"}}>{item.title}</h1></Link>
     <h2 style={{marginLeft:"-14px",position:"absolute",left:"23px",top:"192px",fontFamily:"San Francisco"}} id="changesprice" className="text-left">{item.price}d</h2>
     <div style={{paddingRight:"10px",position:"absolute",left:"70%",height:"32px",width:"32px",top:"180px"}}>
     
-     <Button onClick={() => detail(item.item_id)} type="primary" style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
+     <Button onClick={() => getdestail(item.item_id)} type="primary" style={{borderRadius:"10px",backgroundColor:"#3DAB85",border:"#3DAB85"}} icon={<ShoppingCartOutlined />} ></Button>
      </div>
   </Card>
              </div>

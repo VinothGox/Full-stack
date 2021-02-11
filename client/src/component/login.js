@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 import "./login.css";
 import {productcontext} from "../ContextApi/contextapi";
 import Axios from "axios";
+import {UIstore} from "./stateStore";
 import {
     Form,
     Input,
@@ -13,22 +14,27 @@ import {
  
 export const Login=()=>{
 
+    const cardsId=UIstore.useState(s=>s.cardId);
     const history=useHistory();
 
-    const main=useContext(productcontext);
-
-    const [login,setLogin]=main.loginuser;
-    const [username,setUsername]=main.name;
-    const [image,setImage]=main.image;
+    
+    
 
     const [componentSize, setComponentSize] = useState('default');
 
     const responsegoogle=async(response)=>{
         console.log(response);
         const profile=response.profileObj;
-        setLogin(true);
-        setUsername(profile.name);
-        setImage(profile.imageUrl);
+        UIstore.update(s=>{
+          s.login=true
+        })
+       UIstore.update(s=>{
+         s.name=profile.name
+       });
+       UIstore.update(s=>{
+         s.image=profile.imageUrl
+       });
+       
         const userInformation={
             username:profile.name,
             email:profile.email,
@@ -40,7 +46,11 @@ export const Login=()=>{
         const userInfo=await Axios.post("http://localhost:8004/add/saveuser",userInformation);
         console.log(userInfo);
         const userInfos=await Axios.post("http://localhost:8004/usercard",useremail);
-         console.log(userInfos);
+         console.log(userInfos.data.cards_id);
+         UIstore.update(s=>{
+           s.cardId=userInfos.data.cards_id
+         });
+        
         history.push("/");
 
 
@@ -48,11 +58,7 @@ export const Login=()=>{
     const responsegoogles=(response)=>{
         console.log(response);
     }
-    const logout=(response)=>{
-      
-      history.push("/");
-      setLogin(false);
-    }
+    
 
     return(
 
@@ -117,6 +123,7 @@ export const Login=()=>{
           />
           </div>
         </Form><br/><br/><br/>
+       
        </div>
        </div>
        </div>

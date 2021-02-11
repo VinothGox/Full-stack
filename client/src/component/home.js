@@ -4,7 +4,7 @@ import {GoogleLogout} from "react-google-login";
 import axios from "axios";
 import {productcontext} from "../ContextApi/contextapi";
 import "./home.css";
-
+import {UIstore} from "./stateStore";
 import 'antd/dist/antd.css';
 import { Card,Carousel,Dropdown,Menu } from 'antd';
 import {Button,message} from "antd";
@@ -17,19 +17,24 @@ import {Typography } from 'antd';
 
 
 export const Home=()=>{
+
+  const islogin=UIstore.useState(s=>s.login)
+  const name=UIstore.useState(s=>s.name);
+  const images=UIstore.useState(s=>s.image);
+  const detailed=UIstore.useState(s=>s.detail);
+  const id=UIstore.useState(s=>s.cardId);
    
-    const main=useContext(productcontext);
-    const [login,setLogin]=main.loginuser;
-    const [username,setUsername]=main.name;
-    const [image,setImage]=main.image;
+    
+    
+    
     const [recipess,setRecipe]=useState([]);
     const [items,setItems]=useState([]);
     const [selling,setSelling]=useState([]);
     const [category,setCotegory]=useState([]);
-    const [resulted,setResulted]=useState([]);
-    const [details,setDetails]=main.detail;
+   
+  
     const [searched,setSearched]=useState();
-    const [cook,setCook]=main.cook;
+   
     const [demos,setDemos]=useState(2);
     const [quantityss,setQuantityss]=useState(1);
 
@@ -84,17 +89,13 @@ const getTopSelling=async()=>{
         //setMessage("submit Successfully ");
         history.push({pathname:'/search',name:searched});
         }
-        const linkSearch=(name)=>{
-            setSearched(name);
-            history.push("/search");
-        }
-
-        const cookSearch=(label)=>{
-            setCook(label);
-            history.push("/dailyCook")
-        }
+       
+       
         const detail=(item_id)=>{
-          setDetails(item_id);
+          //setDetails(item_id);
+          UIstore.update(s=>{
+            s.detail=item_id
+          });
           history.push("/details");
 
         }
@@ -121,7 +122,7 @@ const getTopSelling=async()=>{
           good:ans.data.data.good,
           bad:ans.data.data.bad,
           quantity:quantityss,
-          cards_id:demos
+          cards_id:id
         }
         console.log(produs);
         const ans1=await axios.post(`http://localhost:8004/addcard/${item_id}`,produs);
@@ -149,9 +150,10 @@ const getTopSelling=async()=>{
     const logout=(response)=>{
       
       history.push("/login");
-      setLogin(false);
-      setUsername();
-      setImage();
+      UIstore.update(s=>{s.login=false});
+     UIstore.update(s=>{s.images=''});
+     UIstore.update(s=>{s.name=''});
+      
     }
 
     const menu = (
@@ -172,14 +174,14 @@ const getTopSelling=async()=>{
     return(
       <div>
       <div><br></br>
-      {login?(
+      {islogin?(
         <div>
       <h1
   style={{fontSize:"11px",fontFamily:"San Francisco",lineHeight:"13px",color:"#1A051D",paddingLeft:"13px"}}>MONDAY,24 OCTOBER
 </h1>
-<h2 style={{fontSize:"22px",fontFamily:"San Francisco",lineHeight:"28px",fontWeight:"600",color:"#1A051D",paddingLeft:"13px"}}>Good Morning, {username}</h2>
+<h2 style={{fontSize:"22px",fontFamily:"San Francisco",lineHeight:"28px",fontWeight:"600",color:"#1A051D",paddingLeft:"13px"}}>Good Morning, {name}</h2>
 <Dropdown overlay={menu}>
-<img className="rounf" src={image} alt=""></img>
+<img className="rounf" src={images} alt=""></img>
 </Dropdown>
 <button className=" btn btn-cools" style={{paddingLeft:"10px",marginLeft:"14px",position:"absolute",top:"90px"}}><i className="fas fa-bars fa-lg" style={{fontSize:"14px",justifyItems:"center"}}></i></button>
 

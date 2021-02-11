@@ -5,12 +5,15 @@ import "./addcard.css";
 import {Row,Col} from "antd";
 import { Card ,Space} from 'antd';
 import {Button} from "antd";
-import {productcontext} from "../ContextApi/contextapi";
+import {UIstore} from "./stateStore";
 import {RightOutlined,ShoppingOutlined,DeleteOutlined} from "@ant-design/icons";
 
 export const AddCard=()=>{
-  const main=useContext(productcontext);
-  const [login,setLogin]=main.loginuser;
+
+  const islogin=UIstore.useState(s=>s.login);
+  const id=UIstore.useState(s=>s.cardId);
+  
+
     const [finals,setFinals]=useState([]);
     const history=useHistory();
    
@@ -20,7 +23,7 @@ export const AddCard=()=>{
         }, []);
         
         const getcards=async()=>{
-          const response=await axios.get(` http://localhost:8004/allcard`);
+          const response=await axios.get(`http://localhost:8004/getallcard/${id}`);
          
          
          setFinals(response.data);
@@ -56,7 +59,7 @@ export const AddCard=()=>{
             
           
             <div><br></br>
-            {login?(
+            {islogin?(
               <div>
             <div style={{paddingLeft:"10px"}}>
   <button onClick={mainPage} style={{ fontSize:"12px",backgroundColor:"white",borderColor:"black",borderRadius:"9px",marginTop:"14px",position:"absolute",top:"10px"}} className="btn btn-pokos"><i className="fas fa-arrow-left fa-lg" style={{ fontSize:"15px"}} ></i></button>

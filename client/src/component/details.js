@@ -1,7 +1,7 @@
 import React,{useContext,useEffect,useState} from "react"
 
 import {useHistory,Link} from "react-router-dom";
-import {productcontext} from "../ContextApi/contextapi";
+
 import axios from "axios";
 import "./details.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,16 +11,22 @@ import { Row, Col } from 'antd';
 import { Card } from 'antd';
 import {Button,message} from "antd";
 import {RightOutlined,ShoppingCartOutlined} from "@ant-design/icons";
+import {UIstore} from "./stateStore";
 
 
 
 export const Details=()=>{
 
-  const main=useContext(productcontext);
-    const [login,setLogin]=main.loginuser;
+  const islogin=UIstore.useState(s=>
+    s.login
+  );
+  const detailed=UIstore.useState(s=>
+    s.detail);
+
+const id=UIstore.useState(s=>s.cardId);
     const history=useHistory();
    
-    const [details,setDetails]=main.detail;
+   
     const [temp,setTemp]=useState([]);
     const [temps,setTemps]=useState([]);
     const [results,setResults]=useState([]);
@@ -55,7 +61,7 @@ export const Details=()=>{
      },[]);
 
     const getDetails=async()=>{
-        const getdetail=await axios.get(`http://localhost:8004/get/${details}`);
+        const getdetail=await axios.get(`http://localhost:8004/get/${detailed}`);
        setResults(getdetail.data.data);
        
         setTemp(getdetail.data.weig);
@@ -82,7 +88,8 @@ const getRecipe=async()=>{
         
       }
       const detail=(item_id)=>{
-        setDetails(item_id);
+       // setDetails(item_id);
+        UIstore.update(s=>{s.detail=item_id});
         history.push("/details");
 
       }
@@ -103,7 +110,7 @@ const getRecipe=async()=>{
           good:results.good,
           bad:results.bad,
           quantity:quantityed,
-          cards_id:demo
+          cards_id:id
         }
        
        
@@ -131,7 +138,7 @@ const getRecipe=async()=>{
 
         <div>
          
-           {login?(
+           {islogin?(
               <div>
           <div><br></br>
          
