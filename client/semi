@@ -1,10 +1,13 @@
 const router = require('express').Router();
-const jq = require('node-jq');
-const { getEmail, getCredentials } = require('../../controllers/credentials');
-
+const { getCredentials } = require('../../controllers/credentials');
+const lodash = require('lodash');
 const {
   shopifyCredentials,
   shopifyInitialize,
+  BulkOperationBuilder,
+  getBulkOperationUrl,
+  jsonTo2D,
+  MAX_VAL,
 } = require('../../utils/shopify-helper');
 const {
   dimensions,
@@ -13,671 +16,446 @@ const {
 
   schema,
 } = require('./data/shopifyFormData');
-const moment = require('moment');
-const { dateRangeToDate } = require('../../utils/ds');
-const { Parser } = require('json2csv');
-const { jsonToGraphQLQuery } = require('json-to-graphql-query');
-const { object, values } = require('underscore');
-const { resolve } = require('path');
-const { default: Axios } = require('axios');
-const alasql = require('alasql');
-const { Console } = require('console');
-const {} = require('json-2-csv');
-const { vault } = require('googleapis/build/src/apis/vault');
+const { join } = require('lodash');
+{
+  const moment = require('moment');
+  const { dateRangeToDate } = require('../../utils/ds');
+  const { Parser } = require('json2csv');
+  const { jsonToGraphQLQuery } = require('json-to-graphql-query');
+  const { object, values } = require('underscore');
+  const { resolve } = require('path');
+  const { default: Axios } = require('axios');
+  const alasql = require('alasql');
+  const { Console } = require('console');
 
-class Shopify {
-  constructor(credential, metrics, dimensions) {
-    this.initDatabase();
-    this.metrics = metrics;
-    this.dimensions = dimensions;
-    //this.shopifyInitialize(credential);
-  }
+  const { vault } = require('googleapis/build/src/apis/vault');
 
-  shopifyInitialize(credential) {
-    this.shopify = new Shopify({
-      shopName: credential.subdomain,
-      accessToken: credential.access_token,
-    });
-  }
+  class Shopify {
+    constructor(credential, metrics, dimensions) {
+      this.initDatabase();
+      this.metrics = metrics;
+      this.dimensions = dimensions;
+      //this.shopifyInitialize(credential);
+    }
 
-  initDatabase() {
-    this.db = new alasql.Database();
-    this.db.exec(schema);
-  }
-  findBelongTo(id) {
-    if (id.includes('Order')) return 'orders';
-    if (id.includes('dimensionOrder')) return 'dimensionOrder';
-    if (id.includes('LineItem')) return 'lineitems';
-    if (id.includes('Product')) return 'products';
+    shopifyInitialize(credential) {
+      this.shopify = new Shopify({
+        shopName: credential.subdomain,
+        accessToken: credential.access_token,
+      });
+    }
 
-    return '';
-  }
-  /*insertRecord1(record1,columns,values){
-    let tableName=this.findBelongTo(record1.id);
-    this.db.exec(
-      'INSERT INTO ' + tableName + ' (' + columns + ') (' + values + ')',
-        record1
+    initDatabase() {
+      this.db = new alasql.Database();
+      this.db.exec(schema);
+    }
+    findBelongTo(id) {
+     if (id.includes('Order')) return 'orders';
+      if (id.includes('LineItem')) return 'lineitems';
+      //console.log(id.includes('LineItem'))
+      var res=id.split("/");
+      var ans=res[3];
+     if(ans=='Product') return 'products';
+     // if (id.includes('Product')) return 'products';
+      if (ans=='ProductVariant') return 'variants'
+     
+   
+      return '';
+    }
+   
+    insertRecord(tempJson, columns, values) {
+     console.log(tempJson);
+      //console.log(columns);
+      //console.log("____________")
+      //console.log(values);
+      let tableName = this.findBelongTo(tempJson.id);
+     //  console.log(tableName);
+    console.log('INSERT INTO ' + tableName + ' (' + columns + ') (' + values + ') ',
+      tempJson);
+      this.db.exec(
+        'INSERT INTO ' + tableName + ' (' + columns + ') (' + values + ') ',
+        tempJson
       );
-  }*/
-  insertRecord(tempJson, columns, values) {
-    let tableName = this.findBelongTo(tempJson.id);
-    console.log(
-      'INSERT INTO ' + tableName + ' (' + columns + ') (' + values + ') ',
-      tempJson
-    );
-    this.db.exec(
-      'INSERT INTO ' + tableName + ' (' + columns + ') (' + values + ') ',
-      tempJson
-    );
-  }
-
-  query1(table, fields) {
-    console.log(fields);
-    console.log('SELECT ' + fields.toString() + ' from ' + table);
-    console.log('GroupBy');
-    return this.db.exec('SELECT ' + fields.toString() + ' from ' + table);
-  }
-  query(table, fields) {
-    console.log('SELECT ' + fields.toString() + ' from ' + table);
-    return this.db.exec('SELECT ' + fields.toString() + ' from ' + table);
-  }
-}
-
-router.post('/testConnection', async (req, res) => {
-  console.log('shopify testConnection');
-  console.log(req.body);
-
-  try {
-    const credential = await shopifyCredentials(req.body.authId);
-
-    console.log(credential);
-    if (credential) {
-      let shopify = shopifyInitialize(credential);
-      let shop = await shopify.shop.get();
-      if (shop.id) {
-        res.json({
-          status: 'success',
-          data: shop,
-          userName: shop.email,
-        });
-      } else {
-        res.json({
-          status: 'error',
-          errorMessage: 'Invalid Credentials',
-        });
-      }
-    } else {
-      res.json({
-        status: 'error',
-        errorMessage: 'Invalid Credentials',
-      });
     }
-  } catch (error) {
-    console.log(error.message);
-    res.json({
-      status: 'error',
-      errorMessage: error.message,
-    });
-  }
-});
+join(fields){
+  console.log(fields);
+  //console.log('SELECT ' + '*' + 'FROM' + 'lineitems' + 'LEFT JOIN' + 'orders' + 'ON' + 'lineitems.__parentId' + '=' + 'orders.id')
+  let q = `SELECT * FROM lineitems LEFT JOIN orders ON lineitems.__parentId =orders.id`
+  console.log(q);
+   return this.db.exec(`SELECT * FROM lineitems LEFT JOIN orders ON lineitems.__parentId =orders.id` );
 
-router.post('/getInitialFormValues', async (req, res) => {
-  try {
+   
+  
+}
+    query(table, fields) {
+      console.log('SELECT ' + fields.toString() + ' from ' + table);
+      return this.db.exec('SELECT ' + fields.toString() + ' from ' + table);
+             
+    }
+ 
+  }
+
+  
+
+
+  router.post('/testConnection', async (req, res) => {
+    console.log('shopify testConnection');
     console.log(req.body);
-    const data = req.body;
-    const credential = await shopifyCredentials(data.conn.authId);
-    // const accessToken = await linkedinCredentials('shopify-1')
 
-    console.log(credential);
-    if (credential) {
-      let shopify = shopifyInitialize(credential);
-      let shop = await shopify.shop.get();
-      console.log(shop);
-      if (shop.id) {
-        res.json({
-          accounts: shop,
-          metrics: metrics,
-          dimensions: dimensions,
-        });
+    try {
+      const credential = await shopifyCredentials(req.body.authId);
+
+      console.log(credential);
+      if (credential) {
+        let shopify = shopifyInitialize(credential);
+        let shop = await shopify.shop.get();
+        if (shop.id) {
+          res.json({
+            status: 'success',
+            data: shop,
+            userName: shop.email,
+          });
+        } else {
+          res.json({
+            status: 'error',
+            errorMessage: 'Invalid Credentials',
+          });
+        }
       } else {
         res.json({
           status: 'error',
           errorMessage: 'Invalid Credentials',
         });
       }
-    } else {
+    } catch (error) {
+      console.log(error.message);
       res.json({
         status: 'error',
-        errorMessage: 'Invalid Credentials',
+        errorMessage: error.message,
       });
     }
-  } catch (error) {
-    console.log('error occured');
-    console.log('ERROR shopify');
-    console.log(error);
-    let errorCode = 400;
-    let errorMessage = 'Something went wrong. Please try again.';
-    if (typeof error.message === 'undefined') {
-      errorMessage = error.response.data.error.message;
-    } else {
-      errorMessage = error.message;
-    }
-    res.status(errorCode).send(errorMessage);
-  }
-});
-
-function getCategoryFromMetrics(metrics) {
-  let category = new Set();
-  metrics.forEach((metric) => {
-    //category.push(fields[metric].category);
   });
-  return category;
-}
 
-function buildergraphlObj(metrics, dimensions) {
-  /* let schema = {};
-  metrics.forEach(metric =>{
-    if(schema[fields[metric].category]) {
-      schema[fields[metric].category].providerParam={...schema[fields[metric].category].providerParam, ...fields[metric].providerParam};
-    } else {
-      schema[fields[metric].category] = {providerParam:fields[metric].providerParam, schema: category[fields[metric].category].schema}
-    }
-  });
-  dimensions.forEach(dimension =>{
-    if(schema[fields[dimension].category]) {
-      schema[fields[dimension].category].providerParam ={...schema[fields[dimension].category].providerParam, ...fields[dimension].providerParam};
-    }
-  });*/
+  router.post('/getInitialFormValues', async (req, res) => {
+    try {
+      console.log(req.body);
+      const data = req.body;
+      const credential = await shopifyCredentials(data.conn.authId);
+      // const accessToken = await linkedinCredentials('shopify-1')
 
-  let graphql = {};
-  console.log(schema);
-  for (const [key, value] of Object.entries(schema)) {
-    graphql[value.schema + '()'] = {
-      edges: {
-        node: value.providerParam,
-      },
-    };
-  }
-  `{
-    order() {
-      edges {
-        node {
-
+      console.log(credential);
+      if (credential) {
+        let shopify = shopifyInitialize(credential);
+        let shop = await shopify.shop.get();
+        console.log(shop);
+        if (shop.id) {
+          res.json({
+            accounts: shop,
+            metrics: metrics,
+            dimensions: dimensions,
+          });
+        } else {
+          res.json({
+            status: 'error',
+            errorMessage: 'Invalid Credentials',
+          });
         }
+      } else {
+        res.json({
+          status: 'error',
+          errorMessage: 'Invalid Credentials',
+        });
       }
+    } catch (error) {
+      console.log('error occured');
+      console.log('ERROR shopify');
+      console.log(error);
+      let errorCode = 400;
+      let errorMessage = 'Something went wrong. Please try again.';
+      if (typeof error.message === 'undefined') {
+        errorMessage = error.response.data.error.message;
+      } else {
+        errorMessage = error.message;
+      }
+      res.status(errorCode).send(errorMessage);
     }
-  }`;
-  return jsonToGraphQLQuery(graphql, { pretty: true });
-  //return graphql;
-}
+  });
 
-function BulkOperationBuilder(query) {
-  console.log('ddddddssssssssssssssss');
+  router.post('/runQuery', async (req, res) => {
+    console.log('req.body getttttttt');
+    console.log(req.body.queryObj);
 
-  query = ` {
-    orders(query:"updated_at:>2019-12-01") {
-      edges {
-        node {
-          id
-        name
-        note
-        tags
-        closedAt
-        createdAt
-        confirmed
-        cancelledAt
-        currencyCode
-        shippingAddress{
-          address1
-          countryCodeV2
-          address2
-          phone
-          city
-          provinceCode
-          country
-          zip
+    try {
+      let data = req.body;
+      let query = data.queryObj;
+
+      let cret = await getCredentials(data.conn.authId);
+      let credential = JSON.parse(cret?.credentials);
+
+      let shopify = shopifyInitialize(credential);
+      let user_shopify = new Shopify(
+        credential,
+        query.metrics,
+        query.dimensions
+      );
+      let bulk = await shopify.graphql(BulkOperationBuilder());
+
+      const queryId = bulk.bulkOperationRunQuery.bulkOperation.id;
+      const url = await getBulkOperationUrl(shopify, queryId);
+      let result = await Axios.get(url);
+
+      console.log(result.data);
+
+      let ProcessResultData = result.data
+        .split('\n')
+        .filter((line) => line)
+        .map((line) => line.trim())
+        .map((line) => {
+          let json = JSON.parse(line);
+          let columns = 'id';
+          let columnsValues = ':id';
+          let tempJson = { id: json.id };
+          let tempJson1={id: json.id};
+          if (json.createdAt) {
+            columns += ' ,createdAt';
+            columnsValues += ' ,:createdAt';
+            tempJson.createdAt = json.createdAt;
+            tempJson1.createdAt = json.createdAt;
+          }
+          if (json.__parentId) {
+            columns += ' ,__parentId';
+            columnsValues += ' ,:__parentId';
+            tempJson.__parentId = json.__parentId;
+            tempJson1.__parentId = json.__parentId;
+          }
+         
+          //Dimensions
+          let obj={};
+          console.log(tempJson)
+          query.dimensions.forEach((dimension) => {
+           
+            let providerParam = fields[dimension].providerParam;
+            let providerParams = fields[dimension].providerParams;
+           
+            
+            
+            columns += ' ,' + providerParam;
+            columnsValues += ' ,:' + providerParam;
+            let providerPath = fields[dimension].providerPath;
+         // console.log(json[providerParams]);
+            if(providerPath && json[providerParams] &&
+              !tempJson[providerPath]){
+           var finals=lodash.get(json[providerParams],providerPath);
           
-        }
-        billingAddress{
-          city
-       }
-        channel {
-          id
-        }
-        confirmed
-        email
-        
-        fullyPaid
-            physicalLocation{
-                 name
+           json[providerParam]=finals
             }
-        fulfillments{
-          status
-        }
-          lineItems(first:20) {
-            edges {
-              node {
-                id
-                quantity
-                originalTotalSet {
-                  shopMoney {
-                    amount
-                  }
-                }
-               
-              }
+            tempJson[providerParam]=json[providerParam];
+            console.log(tempJson);
+           
+          });
+         
+          //Metric
+          query.metrics.forEach((metric) => {
+            let providerParam = fields[metric].providerParam;
+            columns += ' ,' + providerParam;
+            columnsValues += ' ,:' + providerParam;
+            let providerPath = fields[metric].providerPath;
+            if (
+              providerPath &&
+              json[providerParam] &&
+              !tempJson[providerParam]
+            ) {
+              json[providerParam] = providerPath
+                .split('.')
+                .reduce((o, i) => o[i], json[providerParam]);
             }
-          }
-          totalPriceSet  {
-            shopMoney {
-              amount
-            }
-          } 
-          totalTaxSet{
-            shopMoney{
-              amount
-            }
-          }
-          totalShippingPriceSet {
-            shopMoney {
-              amount
-            }
-          }
-          totalRefundedSet{
-            shopMoney{
-          amount
-           }
-         }
-          totalRefundedShippingSet {
-            shopMoney {
-              amount
-            }
-          }
-          subtotalPriceSet {
-            shopMoney {
-              amount
-            }
-          }
-          originalTotalPriceSet{
-            shopMoney{
-              amount
-            }
-          }
-          totalDiscountsSet {
-            shopMoney {
-              amount
-            }
-          }
-        }
-      }
-    } 
-  }`;
-  return `mutation {
-    bulkOperationRunQuery(
-      query:"""
-     ${query}  
-      """
-    ) {
-      bulkOperation {
-        id
-        status
-      }
-      userErrors {
-        field
-        message
-      }
-    }
-  }`;
-}
-function getBulkOperationUrl(shopify, id) {
-  return new Promise(async (resolve, reject) => {
-    let url = '';
-    let query = `
-    {
-      node(id: "${id}") {
-        ... on BulkOperation {
-          id
-          status
-          errorCode
-          createdAt
-          completedAt
-          objectCount
-          fileSize
-          url
-          partialDataUrl
-        }
-      }
-    }
-    `;
-    while (!url) {
-      let result = await shopify.graphql(query);
-      console.log('blukoperation result');
-      console.log(result);
-      url = result.node.url;
-    }
-    if (url) {
-      resolve(url);
-    }
-  });
-}
-
-router.post('/runQuery', async (req, res) => {
-  console.log('req.body getttttttt');
-  console.log(req.body.queryObj);
-  let startTime = new Date();
-  try {
-    let data = req.body;
-    let query = data.queryObj;
-    const sum1 = query.metrics;
-    const sum2 = query.dimensions;
-    console.log(sum1.length);
-
-    const earliestDate = moment('2017-01-01'); // start date of google analytics
-    const latestDate = moment();
-    /*let startDate = new Date(query.startDate);
-    let endDate = new Date(query.endDate);
-    console.log(startDate);*/
-    //console.log(query.metrics);
-    // console.log("check");
-    let dates = dateRangeToDate(
-      data.queryObj.dateRange,
-      data.queryObj.dateValues,
-      latestDate,
-      earliestDate
-    );
-
-    startDate = new Date(dates.startDate);
-    endDate = new Date(dates.endDate);
-    console.log(startDate);
-    console.log(endDate);
-    /*let startDay = startDate.getDate();
-    let startMonth = startDate.getMonth() + 1;
-    let startYear = startDate.getFullYear();
-    let endDay = endDate.getDate();
-    let endMonth = endDate.getMonth() + 1;
-    let endYear = endDate.getFullYear();*/
-
-    let cret = await getCredentials(data.conn.authId);
-    let credential = JSON.parse(cret?.credentials);
-    console.log(credential);
-    let shopify = shopifyInitialize(credential);
-    let user_shopify = new Shopify(credential, query.metrics, query.dimensions);
-    //  console.log("dbbb");
-    //console.log(user_shopify);
-
-    let category = getCategoryFromMetrics(query.metrics);
-    let graphqlObj = buildergraphlObj(query.metrics, query.dimensions);
-    console.log(graphqlObj);
-    let bulk = await shopify.graphql(BulkOperationBuilder(graphqlObj));
-    console.log('bluk operation!!');
-    console.log(bulk);
-    queryId = bulk.bulkOperationRunQuery.bulkOperation.id;
-    url = await getBulkOperationUrl(shopify, queryId);
-    console.log(url);
-    let result = await Axios.get(url);
-
-    console.log('result data');
-    console.log('result data');
-    console.log(result.data);
-
-    //metric solution
-    let d = result.data
-      .split('\n')
-      .filter((line) => line)
-      .map((line) => line.trim())
-      .map((line) => {
-        let json = JSON.parse(line);
-        let columns = 'id';
-        let columnsValues = ':id';
-        let tempJson = { id: json.id };
-        if (json.createdAt) {
-          columns += ' ,createdAt';
-          columnsValues += ' ,:createdAt';
-          tempJson.createdAt = json.createdAt;
-        }
-        if (json.__parentId) {
-          columns += ' ,__parentId';
-          columnsValues += ' ,:__parentId';
-          tempJson.__parentId = json.__parentId;
-        }
-        //  console.log(query);
-        console.log('queryeddd');
-        query.dimensions.forEach((dimension) => {
-          // console.log(fields[dimension],dimension);
-          let providerParam = fields[dimension].providerParam;
-          columns += ' ,' + providerParam;
-          columnsValues += ' ,:' + providerParam;
-          let providerPath = fields[dimension].providerPath;
-          if (providerPath && json[providerParam] && !tempJson[providerParam]) {
-            json[providerParam] = providerPath
-              .split('.')
-              .reduce((l, k) => l[k], json[providerParam]);
-          }
-          tempJson[providerParam] = json[providerParam];
-        });
-        query.metrics.forEach((metric) => {
-          // console.log(fields[metric], metric);
-          let providerParam = fields[metric].providerParam;
-          columns += ' ,' + providerParam;
-          columnsValues += ' ,:' + providerParam;
-          let providerPath = fields[metric].providerPath;
-          if (providerPath && json[providerParam] && !tempJson[providerParam]) {
-            json[providerParam] = providerPath
-              .split('.')
-              .reduce((o, i) => o[i], json[providerParam]);
-          }
-          tempJson[providerParam] = json[providerParam];
-        });
-
-        const ans = user_shopify.insertRecord(tempJson, columns, columnsValues);
-        console.log(ans);
-
-        return json;
-      });
-    console.log(d);
-
-    /* //dimension solution
-      let f = result.data
-      .split('\n')
-      .filter((line) => line)
-      .map((line) => line.trim())
-      .map((line) => {
-        let json = JSON.parse(line);
-        let columns = 'id';
-        let columnsValues = ':id';
-        let tempJson = { id: json.id };
-        if (json.createdAt) {
-          columns += ' ,createdAt';
-          columnsValues += ' ,:createdAt';
-          tempJson.createdAt = json.createdAt;
-        }
-        if (json.__parentId) {
-          columns += ' ,__parentId';
-          columnsValues += ' ,:__parentId';
-          tempJson.__parentId = json.__parentId;
-        }
-         //  console.log(query);
-        console.log("queryeddd");
-        query.dimensions.forEach((dimension) => {
-          console.log(fields[dimension], dimension);
-          let providerParam = fields[dimension].providerParam;
-          columns += ' ,' + providerParam;
-          columnsValues += ' ,:' + providerParam;
-          let providerPath = fields[dimension].providerPath;
-          if (providerPath && json[providerParam] && !tempJson[providerParam]) {
-            json[providerParam] = providerPath
-              .split('.')
-              .reduce((o, i) => o[i], json[providerParam]);
-          }
-          tempJson[providerParam] = json[providerParam];
-        });
-        console.log("dddddddpopopopo");
-        console.log(tempJson);
-        console.log("wewwwwwwwweeeweewww");
-
+            tempJson[providerParam] = json[providerParam];
+          });
+          //console.log(tempJson.id);
+          console.log("popipopipopipopipopipopi")
+          console.log(tempJson);
+          const ans = user_shopify.insertRecord(
+            tempJson,
+            columns,
+            columnsValues
+          );
        
-        console.log(columnsValues);
-        user_shopify.insertRecord1(tempJson,columns, columnsValues);
-        return json;
-      });*/
-    //let finalresult = flatToTree(readJsonLines(result.data));
-    grouping = {};
-    query.dimensions.forEach((dimension) => {
-      if (!(fields[dimension].category in grouping)) {
-        grouping[fields[dimension].category] = {};
-      }
+         
 
-      let providerParam = fields[dimension].providerParam;
-      let column = '';
-      if (fields[dimension].providerParamAggregation) {
-        column =
-          fields[dimension].providerParamAggregation +
-          '(' +
-          providerParam +
-          ') AS ' +
-          dimension;
-      } else {
-        column = providerParam + ' AS ' + dimension;
-      }
+          return json;
+                  });
+          //console.log(ProcessResultData);
 
-      if (grouping[fields[dimension].category].columns) {
-        grouping[fields[dimension].category].columns.push(column);
-      } else {
-        grouping[fields[dimension].category].columns = [column];
-      }
-    });
-    query.metrics.forEach((metric) => {
-      if (!(fields[metric].category in grouping)) {
-        grouping[fields[metric].category] = {};
-      }
+          //Grouping
+      let grouping = {};
+     let orderedColumns=[];
+      query.dimensions.forEach((dimension) => {
+        let label=fields[dimension].label;
+        orderedColumns.push(label);
+        if (!(fields[dimension].category in grouping)) {
+          grouping[fields[dimension].category] = {};
+        }
 
-      let providerParam = fields[metric].providerParam;
-      let column = '';
-      if (fields[metric].providerParamAggregation) {
-        column =
-          fields[metric].providerParamAggregation +
-          '(' +
-          providerParam +
-          ') AS ' +
-          metric;
-      } else {
-        column = providerParam + ' AS ' + metric;
-      }
+        let providerParam = fields[dimension].providerParam;
+        let providerPath=fields[dimension].providerPath;
+        let column = '';
+        if (fields[dimension].providerParamAggregation) {
+          column =
+            fields[dimension].providerParamAggregation +
+            '(' +
+            providerParam +
+            ') AS ' +
+            dimension;
+        } else {
+          column =  providerParam + ' AS ' + '['+ label+']';
+        }
+        if (grouping[fields[dimension].category].columns) {
+          grouping[fields[dimension].category].columns.push(column);
+        } else {
+          grouping[fields[dimension].category].columns = [column];
+        }
+      });
 
-      if (grouping[fields[metric].category].columns) {
-        grouping[fields[metric].category].columns.push(column);
-      } else {
-        grouping[fields[metric].category].columns = [column];
-      }
-    });
+      query.metrics.forEach((metric) => {
+       let label=fields[metric].label;
+       orderedColumns.push(label);
+        if (!(fields[metric].category in grouping)) {
+          grouping[fields[metric].category] = {};
+        }
+        let providerParam = fields[metric].providerParam;
+        let column = '';
+        if (fields[metric].providerParamAggregation) {
+          column =
+            fields[metric].providerParamAggregation +
+            '(' +
+            providerParam +
+            ') AS ' +
+            metric;
+        } else {
+          column = providerParam + ' AS ' + '['+ label+']';
+        }
 
-    /*  grouping1 = {};
-    query.dimensions.forEach((dimension) => {
-      if (!(fields[dimension].category in grouping)) {
-        grouping[fields[dimension].category] = {};
-      }
+        if (grouping[fields[metric].category].columns) {
+          grouping[fields[metric].category].columns.push(column);
+        } else {
+          grouping[fields[metric].category].columns = [column];
+        }
+      });
 
-      let providerParam = fields[dimension].providerParam;
-      let column = '';
-      if (fields[dimension].providerParamAggregation) {
-        column =
-          fields[dimension].providerParamAggregation +
-          '(' +
-          providerParam +
-          ') AS ' +
-          dimension;
-      } else {
-        column = providerParam + ' AS ' + dimension;
-      }
+    
 
-      if (grouping[fields[dimension].category].columns) {
-        grouping[fields[dimension].category].columns.push(column);
-      } else {
-        grouping[fields[dimension].category].columns = [column];
-      }
-    });*/
-
-    /* query.dimensions.forEach(dimension =>{  
-      let providerParam = fields[dimension].providerParam; 
-      column = providerParam;
-      group = providerParam;
-      
-      if(grouping[fields[metric].category].columns) {
-        grouping[fields[metric].category].columns.push(column);
-      } else {
-        grouping[fields[metric].category].columns = [column];
-      }
-      if(grouping[fields[metric].category].group) {
-        grouping[fields[metric].category].group.push(group);
-      } else {
-        grouping[fields[metric].category].group = [group];
-      }
-      
-    }); */
-    result = {};
-    let arr = [];
-    let i = 0;
-    for (const param in grouping) {
-      console.log(param);
-      console.log('vadavadavdavda');
-      let data = user_shopify.query(param, grouping[param].columns);
-      console.log(data);
-      let ans = arr.push(data);
-      console.log(ans);
-      result1 = { ...result, ...data[0] };
+     let result1 = [];
+   
+      let arr = [];
+     let arr1=[];
+      for (const param in grouping) {
+        var i=0;
+       arr1.push(...grouping[param].columns);
+       //  var ans=arr.push(data);
+     //   result1 = { ...result1, ...data[i]};
+     //  i++;
+      } 
+      var joindata= user_shopify.join(arr1.toString());
+      let finalData=alasql(`SELECT ${arr1.toString()} FROM ?`,[joindata]);
+      console.log(finalData);
+      if(arr.length==1){
+      var pok=arr[0];
     }
-    console.log(arr.length);
-    console.table(arr);
-    console.log(arr[0]);
 
-    /*for (const param in grouping) {
-      console.log(param);
-      console.log("vadavadavdavda");
-      let data = user_shopify.query1(param, grouping[param].columns);
-      result = { ...result, ...data[1] };
-    }*/
-    let headers = [
+
+    if(arr.length==2){
+     // var firstData=arr[0].concat(arr[1]);
+      var pok=[];
+     var n1=arr[0].length;
+     var n2=arr[1].length;
+     if(n1>n2){
+       var n3=n1;
+     }
+     else{
+       n3=n2;
+     }
+    // console.log(n3);
+     //console.log(n1,n2);
+     for(let index = 0; index <n3; index++) {
+     let obj = {
+      ...arr[0][index],
+      ...arr[1][index]
+    }
+    pok.push(obj)
+   }
+  // console.log(pok);  
+    }
+
+
+    if(arr.length==3){
+      var pok=[];
+      for(let index=0;index<arr[0].length;index++){
+        let obj={
+          ...arr[0][index],
+          ...arr[1][index],
+          ...arr[2][index]
+        }
+        pok.push(obj);
+      }
+      //console.log(pok);
+    }
+
+
+     if(arr.length==4){
+      var pok=[];
+      for(let index=0;index<arr[0].length;index++){
+        let obj={
+          ...arr[0][index],
+          ...arr[1][index],
+          ...arr[2][index],
+          ...arr[3][index]
+        }
+        pok.push(obj);
+      }
+      //console.log(pok);
+     }
+    
+const response=jsonTo2D(finalData,orderedColumns,false);
+//console.log(response);
+     
+   // console.log(pok)
+ /*   let headers1 = [
       Object.keys(result1).map((key) => {
-        // console.log(key);
+        //console.log(key);
         return fields[key].label;
       }),
     ];
 
-    const json2csvParser = new Parser();
-    let csv = json2csvParser.parse(arr[0]);
-    csv = csv.split('\n');
-    csv.splice(0, 1);
-    csv = csv.map((e, index) => {
+    const json2csvParser1 = new Parser();
+    let csv1 = json2csvParser1.parse(pok);
+    csv1 = csv1.split('\n');
+    csv1.splice(0, 1);
+    csv1 = csv1.map((e, index) => {
       let s = e.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
       s = s.map((ae) => {
         return ae.replace(/"/g, '');
       });
       return s;
     });
-
-    console.log('ddddddddddddddd');
-
-    console.log(csv);
-    console.log(headers);
-    res.json({ twoD: csv, headers: headers });
-
-    /* let adAnalytics =  adCampaignIds.map((e)=>{
-            
-                   }) */
-  } catch (error) {
-    // console.log(error)
-    //  console.log(error.message)
-    console.log(error);
-    let errorCode = 400;
-    let errorMessage = 'Something went wrong. Please try again.';
-    if (typeof error.message === 'undefined') {
-      errorMessage = error.response.data.error.message;
-    } else {
-      errorMessage = error.message;
+    console.log("ddddddddddddddd");
+    
+ // console.log(csv1);
+  //console.log(headers1);
+*/
+      res.json(response);
+  
+    } catch (error) {
+      console.log(error);
+      let errorCode = 400;
+      let errorMessage = 'Something went wrong. Please try again.';
+      if (typeof error.message === 'undefined') {
+        errorMessage = error.response.data.error.message;
+      } else {
+        errorMessage = error.message;
+      }
+      res.status(errorCode).send(errorMessage);
     }
-    res.status(errorCode).send(errorMessage);
-  }
-});
-
+  });
+}
 module.exports = router;
 
