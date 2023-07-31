@@ -17,6 +17,7 @@ jobs:
       uses: github/issue-metrics@v2
       env:
         GH_TOKEN: ${{ secrets.ISSUE }}
+        LABELS_TO_MEASURE: 'bug'
         SEARCH_QUERY: 'repo:VinothGox/Full-stack is:issue created:2023-05-01..2023-05-31 -reason:"not planned"'
 
     - name: Create issue
@@ -25,4 +26,5 @@ jobs:
         title: Monthly issue metrics report
         token: ${{ secrets.ISSUE }}
         content-filepath: ./issue_metrics.md
+        assignees: <YOUR_GITHUB_HANDLE_HERE>
         
