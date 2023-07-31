@@ -1,0 +1,21 @@
+name: Monthly issue metrics
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  build:
+    name: issue metrics
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    - name: Run issue-metrics tool
+      uses: github/issue-metrics@v2
+      env:
+        GH_TOKEN: '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'
+        LABELS_TO_MEASURE: 'bug'
+        SEARCH_QUERY: 'repo:VinothGox/Full-stack is:issue created:2023-07-01..2023-07-31 -reason:"not planned"'
