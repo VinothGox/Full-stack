@@ -16,6 +16,6 @@ jobs:
     - name: Run issue-metrics tool
       uses: github/issue-metrics@v2
       env:
-        GH_TOKEN: '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'
+        GH_TOKEN: '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'
         LABELS_TO_MEASURE: 'bug'
         SEARCH_QUERY: 'repo:https://github.com/VinothGox/Full-stack is:issue created:2023-07-01..2023-07-31 -reason:"not planned"'
