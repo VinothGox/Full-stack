@@ -18,4 +18,12 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.ISSUE }}
         LABELS_TO_MEASURE: 'bug'
-        SEARCH_QUERY: 'repo:VinothGox/Full-stack is:issue created:2023-07-01..2023-07-31 -reason:"not planned"'
+        SEARCH_QUERY: 'repo:VinothGox/Full-stack is:issue created:2023-05-01..2023-05-31 -reason:"not planned"'
+
+    - name: Create issue
+      uses: peter-evans/create-issue-from-file@v4
+      with:
+        title: Monthly issue metrics report
+        token: ${{ secrets.ISSUE }}
+        content-filepath: ./issue_metrics.md
+        
